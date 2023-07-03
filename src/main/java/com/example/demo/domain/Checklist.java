@@ -13,7 +13,7 @@ import java.util.Date;
 public class Checklist {
 
     @Id @GeneratedValue
-    @Column(name = "checklist_id")
+    @Column(name = "checklist_id") // 체크리스트 아이디
     private int checklistId;
 
     // user_id
