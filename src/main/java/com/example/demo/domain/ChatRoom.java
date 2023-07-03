@@ -7,25 +7,18 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="chatMessage")
+@Table(name="chatRoom")
 @Getter
 @Setter
-public class ChatMessage {
+public class ChatRoom {
     @Id
     @GeneratedValue
-    @Column(name="message_id")
-    private int messageId;
+    @Column(name="room_id")
+    private int room_number;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id")
-    private ChatRoom chatRoom;
-
-    private String content;
-    private LocalDateTime timestamp;
 
 
 }
