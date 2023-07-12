@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class comment {
+public class Comment {
 
     @Id
     @GeneratedValue
