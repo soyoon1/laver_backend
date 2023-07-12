@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="chatRoom")
+@Table(name="Post")
 @Getter
 @Setter
 public class Post {
