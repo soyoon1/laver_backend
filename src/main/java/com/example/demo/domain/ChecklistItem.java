@@ -27,7 +27,9 @@ public class ChecklistItem {
 
     private Boolean isBool;
     private Boolean boolAnswer;
+    @Column(length = 100)
     private String textQuestion;
+    @Column(length = 100)
     private String textAnswer;
 
 }

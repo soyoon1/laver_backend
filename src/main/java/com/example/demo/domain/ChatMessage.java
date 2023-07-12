@@ -21,6 +21,7 @@ public class ChatMessage {
     @JoinColumn(name="room_id")
     private ChatRoom chatRoom;
 
+    @Column(length = 100)
     private String content;
     private LocalDateTime timestamp;
 
