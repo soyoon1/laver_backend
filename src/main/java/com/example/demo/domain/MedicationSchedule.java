@@ -27,6 +27,7 @@ public class MedicationSchedule {
 //    private User user;
 
     private int dosage;
+    @Column(length=5)
     private String dayOfWeek;
     private LocalTime timeOfDay;  // 나중에 포맷을 정해줘야 함.
 

@@ -17,11 +17,15 @@ public class User {
     @Column(name="user_id")
     private int id;
 
+    @Column(length=100)
     private String password;
     private int age;
+    @Column(length=100)
     private String name;
+    @Column(length=100)
     private String nickname;
     private Date birth;
+    @Column(length=500)
     private String sentence;
 
     public User(String password, int age, String name, String nickname, Date date, String sentence){
