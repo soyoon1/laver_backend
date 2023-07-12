@@ -20,6 +20,7 @@ public class Medication {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(length=30)
     private String medicationName;
 
 }
