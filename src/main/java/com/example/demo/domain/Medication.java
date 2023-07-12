@@ -13,13 +13,13 @@ public class Medication {
     @Id
     @GeneratedValue
     @Column(name = "medication_id")
-    private int medicationId;
+    private int id;
 
     // user_id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String medication_name;
+    private String medicationName;
 
 }

@@ -10,15 +10,21 @@ import java.time.LocalDateTime;
 @Table(name="chatRoom")
 @Getter
 @Setter
-public class ChatRoom {
+public class Post {
     @Id
     @GeneratedValue
-    @Column(name="room_id")
+    @Column(name="post_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
+
+    @Column(length = 100)
+    private String title;
+    @Column(length = 3000)
+    private String content;
+    private LocalDateTime timestamp;
 
 
 }

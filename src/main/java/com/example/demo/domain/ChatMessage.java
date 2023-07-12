@@ -14,11 +14,8 @@ public class ChatMessage {
     @Id
     @GeneratedValue
     @Column(name="message_id")
-    private int messageId;
+    private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="room_id")

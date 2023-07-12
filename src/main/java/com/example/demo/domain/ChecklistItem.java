@@ -13,21 +13,21 @@ public class ChecklistItem {
 
     @Id @GeneratedValue
     @Column(name = "item_id")
-    private int itemId;
+    private int id;
 
     // checklist_id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "checklist_id")
     private Checklist checklist;
 
-    // user_id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    // user_id 생략
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
-    private Boolean is_bool;
-    private Boolean bool_answer;
-    private String text_question;
-    private String text_answer;
+    private Boolean isBool;
+    private Boolean boolAnswer;
+    private String textQuestion;
+    private String textAnswer;
 
 }
