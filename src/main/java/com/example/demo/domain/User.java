@@ -24,6 +24,13 @@ public class User {
     private Date birth;
     private String sentence;
 
-
+    public User(String password, int age, String name, String nickname, Date date, String sentence){
+        this.password =password;
+        this.age = age;
+        this.name = name;
+        this.nickname = nickname;
+        this.birth = date;
+        this.sentence = sentence;
+    }
 
 }
