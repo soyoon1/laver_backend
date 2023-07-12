@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ChecklistItem")
@@ -31,5 +32,14 @@ public class ChecklistItem {
     private String textQuestion;
     @Column(length = 100)
     private String textAnswer;
+
+    public ChecklistItem(Checklist checklist, Boolean isBool, Boolean boolAnswer, String textQuestion, String textAnswer){
+        this.checklist=checklist;
+        this.isBool =isBool;
+        this.boolAnswer = boolAnswer;
+        this.textQuestion = textQuestion;
+        this.textAnswer = textAnswer;
+    }
+
 
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,5 +24,10 @@ public class Checklist {
 
 
     private Date date;
+
+    public Checklist(User user, Date date){
+        this.user=user;
+        this.date =date;
+    }
 
 }
