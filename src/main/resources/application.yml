@@ -1,11 +1,14 @@
 #spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-#spring.datasource.url=jdbc:mariadb://mariadb.ci3ovhrknnpp.ap-northeast-2.rds.amazonaws.com:3306/mariadb
+#spring.datasource.url=jdbc:mariadb://mariadb.ci3ovhrknnpp.ap-northeast-2.rds.amazonaws.com:3306/LaverMariaDB
 #spring.datasource.username=root
-#spring.datasource.password=1234
+#spring.datasource.password=Laver1234!
+#
+#spring.jpa.show-sql=true
+#spring.jpa.hibernate.ddl-auto=none
 
 server:
   port: 3333
-
+#
 spring:
   datasource:
 #    maria:
@@ -19,4 +22,4 @@ spring:
         format_sql: true
         temp:
         use_jdbc_metadata_defaults: false
-    generate-ddl: true
+    generate-ddl: false
