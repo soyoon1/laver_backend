@@ -15,7 +15,7 @@ import java.util.Date;
 public class User {
     @Id @GeneratedValue
     @Column(name="user_id")
-    private int userId;
+    private int id;
 
     private String password;
     private int age;

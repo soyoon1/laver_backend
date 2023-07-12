@@ -14,7 +14,7 @@ public class Checklist {
 
     @Id @GeneratedValue
     @Column(name = "checklist_id") // 체크리스트 아이디
-    private int checklistId;
+    private int id;
 
     // user_id
     @ManyToOne(fetch = FetchType.LAZY)

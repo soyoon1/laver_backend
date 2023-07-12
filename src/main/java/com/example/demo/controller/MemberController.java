@@ -21,7 +21,6 @@ public class MemberController {
     public User insert(){
         return memberRepository.save(
                 new User( "090879", 123, "whthdbs", "wesdfsdfsfsgdgdg", new Date(), "한 마디")
-
         );
     }
 }
