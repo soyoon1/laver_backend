@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 public class Checklist {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "checklist_id") // 체크리스트 아이디
     private int id;
 
