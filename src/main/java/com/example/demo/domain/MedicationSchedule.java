@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Setter
 public class MedicationSchedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private int id;
 
