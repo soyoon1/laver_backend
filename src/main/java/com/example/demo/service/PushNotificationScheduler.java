@@ -120,7 +120,7 @@ public class PushNotificationScheduler {
         // 테스트 코드
         System.out.println();
         System.out.println("그냥 1분마다 발송되는 알림");
-        String targetToken = "etIElynLRyWPyoVM3hBU4w:APA91bGuFHmRN-2WR2MDlpiKT8so-8EdKi6pZ7hpbdjpHPM1hdJwkrdbrSjfvic1tQjAVWZqe-EhRkGcDuL-4GjQbDBKhooxINOKG1rHOZb7Vw2gIVAiCIW2s61Fm-YDPlox6G4lEs22"; // 디바이스 토큰은 푸시 알림을 전송할 디바이스를 식별하는 값  나중에 데이터베이스에서 가져오도록 하겠다.
+        String targetToken = "eV0BlQKaThKxlAk28Y4yHb:APA91bEC0ECiuHHeWAE8ZfNhA9sRvr6TYJ9lXmLsn_4rwebeNknBCLLHRyyE1vHq7JKi5oeoem8UEp4pFQG_4omu2f7XNczVZ-_PHZW2K3ZQ3hLpsgAKgigxqYg7TxzEwnOdxYNSf4uD"; // 디바이스 토큰은 푸시 알림을 전송할 디바이스를 식별하는 값  나중에 데이터베이스에서 가져오도록 하겠다.
         String title = "1분마다 알림이 울릴까요?";
         String body = "약을 복용하고 인증해주세요.";
         String sound = "default";
