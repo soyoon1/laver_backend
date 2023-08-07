@@ -16,6 +16,11 @@ public class ChatMessage {
     @Column(name="message_id")
     private int id;
 
+    public enum MessageType{
+        ENTER, TALK
+    }
+
+    private MessageType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="room_id")
@@ -24,6 +29,11 @@ public class ChatMessage {
     @Column(length = 100)
     private String content;
     private LocalDateTime timestamp;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
 
 
 }

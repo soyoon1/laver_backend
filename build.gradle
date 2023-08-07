@@ -39,6 +39,10 @@ dependencies {
 //	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.2'
 //	compile group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
 
+
+	//웹소캣 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 tasks.named('test') {
