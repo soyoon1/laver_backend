@@ -20,7 +20,7 @@ public class MemberController {
     @GetMapping("/insert") // CREATE
     public User insert(){
         return memberRepository.save(
-                new User( "03322311", 22, "또 새로운 토큰 유저", "고양이", new Date(), "한 마디 한마디", "eV0BlQKaThKxlAk28Y4yHb:APA91bEC0ECiuHHeWAE8ZfNhA9sRvr6TYJ9lXmLsn_4rwebeNknBCLLHRyyE1vHq7JKi5oeoem8UEp4pFQG_4omu2f7XNczVZ-_PHZW2K3ZQ3hLpsgAKgigxqYg7TxzEwnOdxYNSf4uD")
+                new User( "03322311", 22, "또또 새로운 토큰 유저", "고양이", new Date(), "한 마디 한마디", "fO7Rd3VARZWYQTirwMTsUv:APA91bF2izQfj5_n8t_GtfQwr5yAMq6mg9fcnctY4FsX_26B81_RVvB0JxfKTJiIKXPV_91iUSUFNYgn--124VxUt27GNactfLOcdzwiwWIf-slmEfe3SCb8l_DNPJwlNSIv3ql3dBKU")
         );
     }
 }

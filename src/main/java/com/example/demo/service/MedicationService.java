@@ -32,7 +32,7 @@ public class MedicationService {
         boolean result = false; // 이미 생성된 약인지 판단.
         Medication needMedication = new Medication();  // 약 스케줄 생성에 필요한 약
         for(Medication medication : medicationRepository.findAll()){  // 모든 약 종류를 찾아줌.
-            if(medication.getUser().getId() == Integer.valueOf(medicationInsertDTO.getUserId())) {
+            if(medication.getUser().getId() == Integer.parseInt(medicationInsertDTO.getUserId())) {
                 if (medication.getMedicationName().equals(medicationInsertDTO.getMedicationName())) { // 약들 중 지금 추가하려는 약의 이름이 이미 데이터베이스에 저장되어 있다면
                     needMedication = medication;
                     result = true; // 이미 생성된 약이다. 라는 것을 나타냄.
@@ -66,8 +66,13 @@ public class MedicationService {
 //        medicationRepository.save(medication);
 
     }
-
+    @Transactional
     public Medication findOne(Integer id){return medicationRepository.findById(id).get();}
+
+
+    // 오전, 오후에 해당하는 약 스케줄
+    // public
+
 
 
 

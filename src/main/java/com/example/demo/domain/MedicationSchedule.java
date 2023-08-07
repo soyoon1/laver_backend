@@ -34,6 +34,8 @@ public class MedicationSchedule {
     // 약을 먹은 시간
     private LocalTime timeOfTaking; // 값이 있는지 없는지로 약 복용 판단. String으로 취급해도 괜찮을까
 
+    private String img;
+
     // 생성메서드
     public static MedicationSchedule createMedicationSchedule(Medication medication, String dayOfWeek, LocalTime timeOfDay){
         MedicationSchedule medicationSchedule = new MedicationSchedule();
