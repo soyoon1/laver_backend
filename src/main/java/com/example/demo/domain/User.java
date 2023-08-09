@@ -35,6 +35,9 @@ public class User {
 //    @OneToMany(mappedBy = "user") // 양방향 관계 매핑된 것. 읽기 전용
 //    private List<Medication> medications = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessage=new ArrayList<>();
+
     public User(String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
         this.password =password;
         this.age = age;
