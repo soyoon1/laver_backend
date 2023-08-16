@@ -1,9 +1,13 @@
 package com.example.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -12,6 +16,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name="ChatMessage")
+@NotNull
+@NotEmpty
+@NotBlank
+//@AllArgsConstructor
 public class ChatMessage {
     public enum MessageType{
         ENTER, TALK
@@ -34,7 +42,7 @@ public class ChatMessage {
     @Column(length = 100)
     private String message;
 
-    private LocalDateTime timestamp;
+    //private LocalDateTime timestamp;
 
     public MessageType getType() {
         return type;
@@ -76,11 +84,11 @@ public class ChatMessage {
         this.message = message;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public LocalDateTime getTimestamp() {
+//        return timestamp;
+//    }
+//
+//    public void setTimestamp(LocalDateTime timestamp) {
+//        this.timestamp = timestamp;
+//    }
 }
