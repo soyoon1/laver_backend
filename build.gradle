@@ -24,7 +24,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'  //유효성 검사
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	//implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
 
@@ -39,8 +39,16 @@ dependencies {
 //	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.2'
 //	compile group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
 
-	implementation 'com.google.firebase:firebase-admin:6.8.1'
-	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+	implementation 'com.google.firebase:firebase-admin:6.8.1'   // FCM
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'  // FCM
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'  // 로그인
+	testImplementation 'org.springframework.security:spring-security-test'  // 로그인
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // 소셜 로그인
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'  // 로그인 JWT
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'  // 로그인 JWT
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'  // 로그인 JWT
+
 
 }
 

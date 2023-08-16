@@ -57,6 +57,27 @@ public class FirebaseCloudMessageService {
 
     }
 
+
+    //    {
+//        "message": {
+//            "token": "your-token-value",
+//            "notification": {
+//                "title": "Test",
+//                "body": "Test message from server"
+//            },
+//            "android": {
+//                "notification": {
+//                    "sound": "default"
+//                }
+//            },
+//            "apns": {
+//                "payload": {
+//                    "sound": "default"
+//                }
+//            }
+//        }
+//    }
+
     private String getAccessToken() throws IOException{
         String firebaseConfigPath = "firebase/firebase_service_key.json";
 
