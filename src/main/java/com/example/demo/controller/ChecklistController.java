@@ -16,7 +16,7 @@ import java.util.Date;
 @RestController
 public class ChecklistController {
 
-    @Autowired
+    @Autowired            // 이거 뺄 것 @Required~
     private ChecklistRepository ChecklistRepository;
     @Autowired
     private MemberRepository memberRepository;

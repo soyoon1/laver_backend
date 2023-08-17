@@ -10,7 +10,6 @@ public class MedicationInsertDTO {
 
     private String userId;
     private String medicationName;
-
     private boolean monday;
     private boolean tuesday;
     private boolean wednesday;

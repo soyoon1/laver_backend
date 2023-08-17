@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.User;
 import com.example.demo.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/insert") // CREATE
     public User insert(){
