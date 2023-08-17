@@ -20,9 +20,6 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
 
-    @Value("${spring.security.secret}")
-    private String secretKey;
-
     private Long expiredMs = 1000 * 60 * 60 * 24L;   // 1000 * 60 * 60l 1시간  * 24 해서 하루, 24시간으로 바꿈.
 
     private final MemberRepository memberRepository;

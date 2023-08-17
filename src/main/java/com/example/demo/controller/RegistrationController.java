@@ -133,8 +133,6 @@ public class RegistrationController {
 
     private final UserService userService;
     UserSignUpRequestDto userSignUpRequestDtoStack = new UserSignUpRequestDto();
-    @Value("${spring.security.secret}")
-    private String secretKey;
 
 
     @PostMapping("/signup")
@@ -164,7 +162,8 @@ public class RegistrationController {
         // 로그인 성공 => Jwt Token 발급
 
         long expiredTimeMs = 1000 * 60 * 60* 24L;  // 1일, 24시간
-        String jwtToken = JwtUtil.createToken(user.getLoginId(), secretKey, expiredTimeMs);
+        String jwtToken;
+        jwtToken = JwtUtil.createToken(user.getLoginId(), user.getRole(), expiredTimeMs);
 
         return jwtToken;
     }
