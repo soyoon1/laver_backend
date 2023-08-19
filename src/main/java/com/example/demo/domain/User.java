@@ -39,8 +39,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OneToMany(mappedBy = "user") // 양방향 관계 매핑된 것. 읽기 전용
-//    private List<Medication> medications = new ArrayList<>();
+    private boolean alarm;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용
+    private List<Medication> medications = new ArrayList<>();
 
     public User(String loginId, String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
         this.loginId = loginId;

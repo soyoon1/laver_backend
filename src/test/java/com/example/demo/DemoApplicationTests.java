@@ -11,10 +11,11 @@ class DemoApplicationTests {
 
 	@Test
 	void jwtText() {
+		int userId = 1;
 		String id = "loginId";
 		String secretKey = "MzcwODIyN0I1ODA0OUI0MEEyMkJENDlEQ0YyRjJBQjJCNEU0RkRFMjA1QUUyMDUyQjMzRjk5NzM3OERGOUQ1NA==";
 
-		String token = JwtUtil.createToken(id, Role.USER,1000 * 60 * 60* 24L);
+		String token = JwtUtil.createToken(userId, id, Role.USER,1000 * 60 * 60* 24L);
 		System.out.println("token: " + token);
 
 		boolean isExpired = JwtUtil.isExpired(token);

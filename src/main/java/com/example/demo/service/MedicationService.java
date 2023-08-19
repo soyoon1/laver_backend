@@ -75,6 +75,11 @@ public class MedicationService {
     // public
 
 
+    @Transactional
+    public Medication findMedicationByUserIdAndMedicationId(int userId, int medicationId){
+        // userId와 medicationId를 기반으로 Medication을 찾아서 반환합니다.
+        return medicationRepository.findByUser_IdAndId(userId, medicationId);
+    }
 
 
 

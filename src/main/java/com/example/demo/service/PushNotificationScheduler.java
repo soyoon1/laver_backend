@@ -61,6 +61,10 @@ public class PushNotificationScheduler {
 
         for(User user : allUsers){
             System.out.println(user.getId());
+            if(!user.isAlarm()){
+                System.out.println("user가 알림 설정을 하지 않았습니다.");
+                break; // 알림 설정을 안 했을 시에 반복문을 빠져나감.
+            }
             List<Medication> medications = medicationRepository.findByUser(user);  // 특정 사용자가 등록한 약 이름 리스트
 
             List<MedicationSchedule> totalSchedules = new ArrayList<>();

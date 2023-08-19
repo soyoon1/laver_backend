@@ -16,12 +16,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class MemberController {
 
+    // 테스트할 때 쓰는 코드
     private final MemberRepository memberRepository;
 
     @GetMapping("/insert") // CREATE
     public User insert(){
         return memberRepository.save(
-                new User("soyoon", "03322311", 22, "또또 새로운 토큰 유저", "고양이", new Date(), "한 마디 한마디", "ddUZlXa6TemNBlhJB_v-85:APA91bF0x7amNi08LJmz5hcrAXzrtDWqQFpmpTpXrHVlETxgkmswFVYEY-qk7k0PzkXgoiuoq8K-ZIsSmFV994OfLdOwmGCVAwdOttBgSZPJeA6GjTeWKHnrYEw_fSYwng8NqlQiPTcZ")
+                new User("user", "03322311", 22, "만들어진 유저", "고양이", new Date(), "한 마디 한마디", "ddUZlXa6TemNBlhJB_v-85:APA91bF0x7amNi08LJmz5hcrAXzrtDWqQFpmpTpXrHVlETxgkmswFVYEY-qk7k0PzkXgoiuoq8K-ZIsSmFV994OfLdOwmGCVAwdOttBgSZPJeA6GjTeWKHnrYEw_fSYwng8NqlQiPTcZ")
         );
     }
 }

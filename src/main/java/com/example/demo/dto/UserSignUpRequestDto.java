@@ -16,6 +16,7 @@ import java.util.Date;
 @Getter @Setter
 @NoArgsConstructor
 public class UserSignUpRequestDto {
+    // 회원 가입 시 쓰이는 Dto
 
   //  @NotBlank(message = "이름을 입력해주세요")
     private String name; // 이름
@@ -54,6 +55,8 @@ public class UserSignUpRequestDto {
     private String sentence;
 
     private String fcmToken;
+
+    private boolean alarm;
 
     @Builder
     public User toEntity(){

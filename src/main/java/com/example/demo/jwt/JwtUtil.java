@@ -46,10 +46,11 @@ public class JwtUtil {
     }
 
     // JWT Token 발급
-    public static String createToken(String loginId, Role role, long expireTimeMs){
+    public static String createToken(int id, String loginId, Role role, long expireTimeMs){
         // Claim = Jwt Token에 들어갈 정보
         // Claim에 loginId를 넣어 줌으로써 나중에 loginId를 꺼낼 수 있음
         Claims claims = Jwts.claims();
+        claims.put("userId", id);
         claims.put("loginId", loginId);
         claims.put("role", role);
 

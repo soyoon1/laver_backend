@@ -1,14 +1,17 @@
 package com.example.demo.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
-@Getter @Setter
-public class MedicationInsertDTO {
-    // 테스트 코드 작성 시 쓰였던 Dto
-    private String userId;
+@Data
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+public class MedicationAddRequestDto {
+    // 마이페이지 - 약 추가, 약 수정 Get, Put 시에 쓰이는 Dto
     private String medicationName;
     private boolean monday;
     private boolean tuesday;

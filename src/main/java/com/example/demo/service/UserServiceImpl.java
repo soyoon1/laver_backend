@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Medication;
 import com.example.demo.domain.User;
-import com.example.demo.dto.LoginRequestDto;
-import com.example.demo.dto.MedicationInsertDTO;
-import com.example.demo.dto.UserSignUpRequestDto;
+import com.example.demo.dto.*;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.internal.util.stereotypes.Lazy;
@@ -13,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -75,6 +76,7 @@ public class UserServiceImpl implements UserService{
         return optionalUser.get();
     }
 
+    @Transactional
     @Override
     public User login(LoginRequestDto loginRequestDto) {
         Optional<User> optionalUser = memberRepository.findByLoginId(loginRequestDto.getLoginId());
@@ -96,6 +98,54 @@ public class UserServiceImpl implements UserService{
 
         return user;
 
+    }
+
+    @Transactional
+    @Override
+    public User getUserByUserId(int userId){
+        Optional<User> optionalUser = memberRepository.findById(userId);
+
+        if(optionalUser.isEmpty()){
+            return null;
+        }
+        return optionalUser.get();
+    }
+
+    @Transactional
+    @Override
+    public MyPageInfoDto getMyPageInfoByUserId(int userId) {
+        User user = memberRepository.findById(userId).orElse(null);
+        if(user == null){
+            // 유저가 없는 경우 처리
+            return null;
+        }
+
+        List<MedicationInfoDto> medicationInfoDtoList = new ArrayList<>();
+        for(Medication medication : user.getMedications()){
+            MedicationInfoDto medicationInfoDto = MedicationInfoDto.builder()
+                    .medicationId(medication.getId())
+                    .medicationName(medication.getMedicationName())
+                    .build();
+            medicationInfoDtoList.add(medicationInfoDto);
+        }
+
+        return MyPageInfoDto.builder()
+                .username(user.getName())
+                .sentence(user.getSentence())
+                .medications(medicationInfoDtoList)
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public User findUserById(int userId){
+        return memberRepository.findById(userId).get();
+    }
+
+    @Transactional
+    @Override
+    public User saveUser(User user) {
+        return memberRepository.save(user);
     }
 
 

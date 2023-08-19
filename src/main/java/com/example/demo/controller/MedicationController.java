@@ -18,7 +18,7 @@ public class MedicationController {
     @GetMapping("/new")
     public String createForm(Model model){
         model.addAttribute("medicationForm", new MedicationInsertDTO());
-        return "medication/createMedicationForm";
+        return "redirect:/medication/createMedicationForm";
     }
 
     // /user/medication-signup

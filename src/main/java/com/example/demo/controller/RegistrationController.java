@@ -132,8 +132,6 @@ import javax.validation.Valid;
 public class RegistrationController {
 
     private final UserService userService;
-    UserSignUpRequestDto userSignUpRequestDtoStack = new UserSignUpRequestDto();
-
 
     @PostMapping("/signup")
     public String processSignup(@RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto, BindingResult result) throws Exception {
@@ -144,7 +142,7 @@ public class RegistrationController {
 
         userService.signUp(userSignUpRequestDto); // 최종적으로 DB에 저장
 
-        return "signup-completed";
+        return "redirect:/signup-completed";
     }
 
 
@@ -163,7 +161,7 @@ public class RegistrationController {
 
         long expiredTimeMs = 1000 * 60 * 60* 24L;  // 1일, 24시간
         String jwtToken;
-        jwtToken = JwtUtil.createToken(user.getLoginId(), user.getRole(), expiredTimeMs);
+        jwtToken = JwtUtil.createToken(user.getId(), user.getLoginId(), user.getRole(), expiredTimeMs);
 
         return jwtToken;
     }
