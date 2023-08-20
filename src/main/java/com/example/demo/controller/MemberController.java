@@ -2,9 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.User;
 import com.example.demo.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +12,15 @@ import java.util.Date;
 
 @RequestMapping("/member")
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    //@Autowired
+    private final MemberRepository memberRepository;
+
+ //autowired 만들지 말고 위에 @RequiredArgsConstructor를 위해 적어주기
+//단 private final로 선언해주었을 때만 가능
+//setter말고 생성자 취급으로 해주기
 
     @GetMapping("/insert") // CREATE
     public User insert(){

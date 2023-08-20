@@ -4,6 +4,7 @@ import com.example.demo.service.ChatService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.persistence.*;
@@ -13,19 +14,20 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-@Entity
-@Table(name="ChatRoom")
+//@Entity
+//@Table(name="ChatRoom")
+//@ToString
 public class ChatRoom {
-    @Id
-    @GeneratedValue
-    @Column(name="room_id")
+//    @Id
+//    @GeneratedValue
+//    @Column(name="room_id")
     private String roomId;
     private String name;
-    @Transient
+    //@Transient
     private Set<WebSocketSession> sessions = new HashSet<>();
-    @JsonIgnore
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private List<ChatMessage> chatMessage=new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+//    private List<ChatMessage> chatMessage=new ArrayList<>();
 
     @Builder
     public ChatRoom(String roomId, String name) {
@@ -36,10 +38,12 @@ public class ChatRoom {
     public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) {
         if (chatMessage.getType().equals(ChatMessage.MessageType.ENTER)) {
             sessions.add(session);
-            chatMessage.setMessage(chatMessage.getUser() + "님이 입장했습니다.");
+            chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
+            sendMessage(chatMessage, chatService);
+        }else if(chatMessage.getType().equals(ChatMessage.MessageType.TALK)){
+            chatMessage.setMessage(chatMessage.getSender());
+            sendMessage(chatMessage, chatService);
         }
-        sendMessage(chatMessage, chatService);
-
     }
 
     private <T> void sendMessage(T message, ChatService chatService) {

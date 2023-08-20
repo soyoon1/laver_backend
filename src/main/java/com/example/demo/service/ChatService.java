@@ -28,8 +28,8 @@ public class ChatService {
         return new ArrayList<>(chatRooms.values());
     }
 
-    public ChatRoom findRoomById(ChatRoom chatRoom) {
-        return chatRooms.get(chatRoom);
+    public ChatRoom findRoomById(String roomId) {
+        return chatRooms.get(roomId);
     }
 
     public ChatRoom createRoom(String name) {
