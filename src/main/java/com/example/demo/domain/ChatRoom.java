@@ -2,9 +2,7 @@ package com.example.demo.domain;
 
 import com.example.demo.service.ChatService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.persistence.*;
@@ -18,16 +16,38 @@ import java.util.Set;
 //@Table(name="ChatRoom")
 //@ToString
 public class ChatRoom {
-//    @Id
-//    @GeneratedValue
-//    @Column(name="room_id")
-    private String roomId;
-    private String name;
-    //@Transient
+@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id",insertable = false, updatable = false)
+    private int id;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name="name")
+    private User user;
+
+//    @ManyToOne(targetEntity = User.class)
+//    @JoinColumn(name="name")
+//    private User user2;
+
+
+
+    @Column(name = "room_name") // 컬럼 매핑 추가
+    private String roomName;
+
+//    public String getName() {
+//        name=getUser().getName();
+//        return name;
+//    }
+
+    @Transient
     private Set<WebSocketSession> sessions = new HashSet<>();
+
 //    @JsonIgnore
-//    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-//    private List<ChatMessage> chatMessage=new ArrayList<>();
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessage=new ArrayList<>();
+
+
+
 
     @Builder
     public ChatRoom(String roomId, String name) {
@@ -53,4 +73,5 @@ public class ChatRoom {
 
    //@OneToMany(mappedBy = "room")
 
+    
 }

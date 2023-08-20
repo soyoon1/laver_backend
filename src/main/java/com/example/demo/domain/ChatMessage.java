@@ -27,12 +27,14 @@ public class ChatMessage {
 
     private MessageType type;
 
+
     private String roomId;
     private String sender;
 //    @Id
 //    @GeneratedValue
 //    @Column(name="message_id")
     private String messageid;
+
 
 //    @ManyToOne(targetEntity = ChatRoom.class)
 //    @JoinColumn(name="roomId")
@@ -93,4 +95,5 @@ public class ChatMessage {
 //    public void setTimestamp(LocalDateTime timestamp) {
 //        this.timestamp = timestamp;
 //    }
+
 }
