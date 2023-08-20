@@ -1,29 +1,99 @@
 package com.example.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name="chatMessage")
+
+
+//@Entity
 @Getter
 @Setter
+//@Table(name="ChatMessage")
+@NotNull
+@NotEmpty
+@NotBlank
+//@AllArgsConstructor
 public class ChatMessage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="message_id")
-    private int id;
+    public enum MessageType{
+        ENTER, TALK
+    }
+
+    private MessageType type;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id")
-    private ChatRoom chatRoom;
+    private String roomId;
+    private String sender;
+//    @Id
+//    @GeneratedValue
+//    @Column(name="message_id")
+    private String messageid;
 
-    @Column(length = 100)
-    private String content;
-    private LocalDateTime timestamp;
 
+//    @ManyToOne(targetEntity = ChatRoom.class)
+//    @JoinColumn(name="roomId")
+    //private ChatRoom chatRoom;
+//    @ManyToOne(targetEntity = User.class)
+//    @JoinColumn(name="id")
+//    private User user;
+
+    //@Column(length = 100)
+    private String message;
+
+//    //private LocalDateTime timestamp;
+//
+//    public MessageType getType() {
+//        return type;
+//    }
+//
+//    public void setType(MessageType type) {
+//        this.type = type;
+//    }
+//
+//    public String getMessageid() {
+//        return messageid;
+//    }
+//
+//    public void setMessageid(String messageid) {
+//        this.messageid = messageid;
+//    }
+//
+//    public ChatRoom getChatRoom() {
+//        return chatRoom;
+//    }
+//
+//    public void setChatRoom(ChatRoom chatRoom) {
+//        this.chatRoom = chatRoom;
+//    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
+
+//    public LocalDateTime getTimestamp() {
+//        return timestamp;
+//    }
+//
+//    public void setTimestamp(LocalDateTime timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
 }
