@@ -26,9 +26,17 @@ public class MedicationSchedule {
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    private int dosage;
-    @Column(length=5)
-    private String dayOfWeek;
+//    private int dosage;
+//    @Column(length=5)
+//    private String dayOfWeek;
+
+    private boolean monday;  // 해당 요일에 약을 먹어야 하는지 알려줌.
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
+    private boolean sunday;
     private LocalTime timeOfDay;  // 나중에 포맷을 정해줘야 함.
 
     // 약을 먹은 시간
@@ -37,10 +45,16 @@ public class MedicationSchedule {
     private String img;
 
     // 생성메서드
-    public static MedicationSchedule createMedicationSchedule(Medication medication, String dayOfWeek, LocalTime timeOfDay){
+    public static MedicationSchedule createMedicationSchedule(Medication medication, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, LocalTime timeOfDay){
         MedicationSchedule medicationSchedule = new MedicationSchedule();
         medicationSchedule.setMedication(medication);
-        medicationSchedule.setDayOfWeek(dayOfWeek);
+        medicationSchedule.setMonday(monday);
+        medicationSchedule.setTuesday(tuesday);
+        medicationSchedule.setWednesday(wednesday);
+        medicationSchedule.setThursday(thursday);
+        medicationSchedule.setFriday(friday);
+        medicationSchedule.setSaturday(saturday);
+        medicationSchedule.setSunday(sunday);
         medicationSchedule.setTimeOfDay(timeOfDay);
         return medicationSchedule;
     }

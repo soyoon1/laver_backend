@@ -20,7 +20,6 @@ public class FcmMessage {
 
         private Android android;
 
-
     }
 
     @Builder
@@ -45,6 +44,7 @@ public class FcmMessage {
     public static class NotificationSound{
         private String sound;
     }
+
 
 }
 

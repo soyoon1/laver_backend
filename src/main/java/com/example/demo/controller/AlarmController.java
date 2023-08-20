@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RequestDTO;
 import com.example.demo.service.FirebaseCloudMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
