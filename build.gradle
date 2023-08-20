@@ -35,16 +35,16 @@ dependencies {
 	// DB 연동
 	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
-	implementation 'com.zaxxer:HikariCP:5.0.1'
+//	implementation 'com.zaxxer:HikariCP:5.0.1'
 //	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.2'
 //	compile group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
 
 
 	//웹소캣 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.google.firebase:firebase-admin:6.8.1'
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+
 }
 
 tasks.named('test') {

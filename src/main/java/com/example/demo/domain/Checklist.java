@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "Checklist")
+@Table(name = "checklist")
 @Getter
 @Setter
 public class Checklist {

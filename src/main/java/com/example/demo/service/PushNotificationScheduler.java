@@ -95,6 +95,7 @@ public class PushNotificationScheduler {
     //
     //            }
 
+
             // 요일이 그냥 "금" 이렇게 저장된다고 생각할 때
 
             for (MedicationSchedule schedule : totalSchedules){                 // 스케줄 데이터의 요일, 시간을 현재 요일, 시간과 비교해 같으면 알림 발송
@@ -103,13 +104,16 @@ public class PushNotificationScheduler {
 //                    System.out.println(schedule.getTimeOfDay());
 //                    System.out.println(formattedTime);
                     if(String.valueOf(schedule.getTimeOfDay()).equals(formattedTime)){
-                        System.out.println("약 스케줄에 따른 알림 발송" + schedule.getTimeOfDay()+formattedTime);  // 알림이 제대로 가는지 확인할 수 있음.
-                        String targetToken = user.getFcmToken();
-                        String title = "약을 복용할 시간입니다!";
-                        String body = "약을 복용하고 인증해주세요.";
-                        String sound = "default";
+                        // 이미지가 추가되어 있지 않으면(약 복용을 인증하지 않았을 경우)
+                        if(schedule.getImg() == null) {
+                            System.out.println("약 스케줄에 따른 알림 발송" + schedule.getTimeOfDay() + formattedTime);  // 알림이 제대로 가는지 확인할 수 있음.
+                            String targetToken = user.getFcmToken();
+                            String title = "약을 복용할 시간입니다!";
+                            String body = "약을 복용하고 인증해주세요.";
+                            String sound = "default";
 
-                        firebaseCloudMessageService.sendMessageTo(targetToken, title, body, sound);
+                            firebaseCloudMessageService.sendMessageTo(targetToken, title, body, sound);
+                        }
                     }
                 }
             }
@@ -118,13 +122,13 @@ public class PushNotificationScheduler {
         }
 
         // 테스트 코드
-        System.out.println();
-        System.out.println("그냥 1분마다 발송되는 알림");
-        String targetToken = "eV0BlQKaThKxlAk28Y4yHb:APA91bEC0ECiuHHeWAE8ZfNhA9sRvr6TYJ9lXmLsn_4rwebeNknBCLLHRyyE1vHq7JKi5oeoem8UEp4pFQG_4omu2f7XNczVZ-_PHZW2K3ZQ3hLpsgAKgigxqYg7TxzEwnOdxYNSf4uD"; // 디바이스 토큰은 푸시 알림을 전송할 디바이스를 식별하는 값  나중에 데이터베이스에서 가져오도록 하겠다.
-        String title = "1분마다 알림이 울릴까요?";
-        String body = "약을 복용하고 인증해주세요.";
-        String sound = "default";
-        firebaseCloudMessageService.sendMessageTo(targetToken, title, body, sound);
+//        System.out.println();
+//        System.out.println("그냥 1분마다 발송되는 알림");
+//        String targetToken = "fO7Rd3VARZWYQTirwMTsUv:APA91bF2izQfj5_n8t_GtfQwr5yAMq6mg9fcnctY4FsX_26B81_RVvB0JxfKTJiIKXPV_91iUSUFNYgn--124VxUt27GNactfLOcdzwiwWIf-slmEfe3SCb8l_DNPJwlNSIv3ql3dBKU"; // 디바이스 토큰은 푸시 알림을 전송할 디바이스를 식별하는 값  나중에 데이터베이스에서 가져오도록 하겠다.
+//        String title = "1분마다 알림이 울릴까요?";
+//        String body = "약을 복용하고 인증해주세요.";
+//        String sound = "default";
+//        firebaseCloudMessageService.sendMessageTo(targetToken, title, body, sound);
 
     }
 

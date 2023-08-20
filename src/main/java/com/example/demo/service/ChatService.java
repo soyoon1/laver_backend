@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 public class ChatService {
     private final ObjectMapper objectMapper;
-    public Object findRoomById;
+
     private Map<String, ChatRoom> chatRooms;
 
     @PostConstruct
@@ -29,15 +29,18 @@ public class ChatService {
         return new ArrayList<>(chatRooms.values());
     }
 
-    public ChatRoom findRoomById(int roomId) {
+
+    public ChatRoom findRoomById(String roomId) {
+
         return chatRooms.get(roomId);
     }
 
     public ChatRoom createRoom(String name) {
         String randomId = UUID.randomUUID().toString();
-        int ri=Integer.parseInt(randomId);
         ChatRoom chatRoom = ChatRoom.builder()
-                .id(ri)
+                .roomId(randomId)
+                .name(name)
+
                 .build();
         chatRooms.put(randomId, chatRoom);
         return chatRoom;
