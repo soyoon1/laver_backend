@@ -5,6 +5,8 @@ import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.User;
 import com.example.demo.dto.MedicationAddRequestDto;
 import com.example.demo.dto.MyPageInfoDto;
+import com.example.demo.dto.PushSettingsDto;
+import com.example.demo.dto.UserSettingsDto;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
 import com.example.demo.service.MedicationService;
@@ -142,6 +144,43 @@ public class MypageController {
         return ResponseEntity.ok("Medication and schedules deleted successfully");
     }
 
+    @GetMapping("/settings")
+    public ResponseEntity<?> getUserSettings(@PathVariable int userId) {
+        User user = userService.findUserById(userId);
+
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserSettingsDto settingsDto = new UserSettingsDto();
+        settingsDto.setName(user.getName());
+        settingsDto.setSentence(user.getSentence());
+        settingsDto.setNickname(user.getNickname());
+        settingsDto.setAlarm(user.isAlarm());
+
+        return ResponseEntity.ok(settingsDto);
+    }
+
+    @PutMapping("/settings/sentence")  // dto를 사용하지 않음.
+    public ResponseEntity<?> updateUserSentence(@PathVariable int userId, @RequestBody String sentence) {
+        User user = userService.findUserById(userId);
+
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        user.setSentence(sentence);
+        userService.saveUser(user);
+
+        return ResponseEntity.ok("User sentence updated successfully");
+    }
+
+    @PutMapping("/settings/push")
+    public ResponseEntity<?> updatePushSettings(@PathVariable int userId, @RequestBody PushSettingsDto requestDto){
+
+        userService.updateAlarmSetting(userId, requestDto.isAlarm());
+        return ResponseEntity.ok("Alarm setting updated successfully");
+    }
 
 
 }

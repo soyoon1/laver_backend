@@ -69,6 +69,7 @@ public class UserSignUpRequestDto {
                 .sentence(sentence)
                 .fcmToken(fcmToken)
                 .role(Role.USER)
+                .alarm(alarm)
                 .build();
     }
 

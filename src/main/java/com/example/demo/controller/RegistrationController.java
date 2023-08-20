@@ -115,6 +115,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.User;
 import com.example.demo.dto.LoginRequestDto;
+import com.example.demo.dto.UserSignUpDto;
 import com.example.demo.dto.UserSignUpRequestDto;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.service.UserService;
@@ -133,14 +134,26 @@ public class RegistrationController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
-    public String processSignup(@RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto, BindingResult result) throws Exception {
+//    @PostMapping("/signup")   약을 하나밖에 못 얻어 옴.
+//    public String processSignup(@RequestBody @Valid UserSignUpRequestDto userSignUpRequestDto, BindingResult result) throws Exception {
+//
+//        System.out.println(userSignUpRequestDto);
+//
+//        if(result.hasErrors()) return "redirect:/signup";
+//
+//        userService.signUp(userSignUpRequestDto); // 최종적으로 DB에 저장
+//
+//        return "redirect:/signup-completed";
+//    }
 
-        System.out.println(userSignUpRequestDto);
+    @PostMapping("/signup")   // 약을 여러 개 얻어올 수 있는 버전
+    public String processSignup(@RequestBody @Valid UserSignUpDto userSignUpDto, BindingResult result) throws Exception {
+
+        System.out.println(userSignUpDto);
 
         if(result.hasErrors()) return "redirect:/signup";
 
-        userService.signUp(userSignUpRequestDto); // 최종적으로 DB에 저장
+        userService.signUp(userSignUpDto); // 최종적으로 DB에 저장
 
         return "redirect:/signup-completed";
     }
