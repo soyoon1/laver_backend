@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
 
 
     @Transactional
-    @Override
+    @Override               // 한 개의 약을 저장할 수 있는 회원가입 코드, 이제 안 쓰임
     public Integer signUp(UserSignUpRequestDto requestDto) throws Exception{
         if (memberRepository.findByLoginId(requestDto.getLoginId()).isPresent()){
             throw new Exception("이미 존재하는 아이디입니다.");

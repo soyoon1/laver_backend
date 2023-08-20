@@ -10,5 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PushSettingsDto {
+    // 알림 설정 시 쓰이는 Dto
     private boolean alarm;
 }

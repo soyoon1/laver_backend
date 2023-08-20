@@ -9,7 +9,7 @@ import com.example.demo.dto.UserSignUpRequestDto;
 public interface UserService {
 
     // 회원가입
-    public Integer signUp(UserSignUpRequestDto requestDto) throws Exception;
+    public Integer signUp(UserSignUpRequestDto requestDto) throws Exception;  // 이제 안 쓰임.
     public Integer signUp(UserSignUpDto requestDto) throws Exception;
 
     public User getLoginUserByLoginId(String loginId);

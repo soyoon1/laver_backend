@@ -16,7 +16,7 @@ import java.util.Date;
 @Getter @Setter
 @NoArgsConstructor
 public class UserSignUpRequestDto {
-    // 회원 가입 시 쓰이는 Dto
+    // 회원 가입 시 쓰였던 Dto, 이제 안 쓰임.
 
   //  @NotBlank(message = "이름을 입력해주세요")
     private String name; // 이름
