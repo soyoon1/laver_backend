@@ -29,6 +29,7 @@ public class ChatMessage {
 
     private MessageType type;
 
+
     //private String roomId;
     //private String sender;
     @Id
@@ -44,6 +45,7 @@ public class ChatMessage {
 
 //
     //private int userId;
+
 
 
 //    @ManyToOne(targetEntity = User.class)

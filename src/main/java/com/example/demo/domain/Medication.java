@@ -26,8 +26,8 @@ public class Medication {
     @Column(length=30)
     private String medicationName;
 
-//    @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL) // 양방향 매핑 읽기 전용
-//    private List<MedicationSchedule> medicationSchedules = new ArrayList<>();
+    @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL) // 양방향 매핑 읽기 전용
+    private List<MedicationSchedule> medicationSchedules = new ArrayList<>();
 
 
     // 생성 메서드

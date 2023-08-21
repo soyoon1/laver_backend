@@ -24,7 +24,9 @@ import java.util.*;
 //@Transactional(readOnly = true)
 public class ChatService {
     private final ObjectMapper objectMapper;
+
     private final ChatRoomRepository chatRoomRepository;
+
     private Map<String, ChatRoom> chatRooms;
     private final UserService userService;
     @PostConstruct
@@ -36,8 +38,10 @@ public class ChatService {
         return new ArrayList<>(chatRooms.values());
     }
 
+
     public ChatRoom findRoomById(int id) {
         return chatRooms.get(id);
+
     }
 
     //@Transactional
@@ -48,6 +52,7 @@ public class ChatService {
                 .user(user)
 //                .partner(partner)
                 .roomName(partner.getName() + "'s Chat")
+
                 .build();
         chatRooms.put(String.valueOf(randomId), chatRoom);
         chatRoomRepository.save(chatRoom);

@@ -1,10 +1,13 @@
 package com.example.demo.domain;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,12 +18,17 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private int id;
 
-    @Column(length=100)
+    @Column(unique = true, nullable = false, length = 45)
+    private String loginId;
+
+    @Column(length=100, nullable = false)
     private String password;
     private int age;
     @Column(length=100)
@@ -34,11 +42,11 @@ public class User {
     @Column(length = 200)
     private String fcmToken;
 
-//    @OneToMany(mappedBy = "user") // 양방향 관계 매핑된 것. 읽기 전용
-//    private List<Medication> medications = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<ChatMessage> chatMessage=new ArrayList<>();
+    private boolean alarm;
+
 
 
     @JsonBackReference
@@ -55,6 +63,14 @@ public class User {
         this.birth = date;
         this.sentence = sentence;
         this.fcmToken = fcmToken;
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void addUserAuthority(){
+        this.role = Role.USER;
     }
 
 }

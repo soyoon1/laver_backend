@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.MedicationInsertDTO;
+import com.example.demo.dto.MedicationInsertDTO;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.User;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +22,7 @@ public class MedicationService {
     private final MedicationScheduleRepository medicationScheduleRepository;
 
     @Transactional
-    public Integer saveMedicationSchedule(MedicationInsertDTO medicationInsertDTO){
+    public void saveMedicationSchedule(MedicationInsertDTO medicationInsertDTO){
         // 사용자 조회
         Optional<User> optionalUser = memberRepository.findById(Integer.valueOf(medicationInsertDTO.getUserId()));
         User findUser = optionalUser.get();
@@ -48,14 +47,18 @@ public class MedicationService {
 
         //약 스케줄 생성 및 저장
         MedicationSchedule newMedicationSchedule;
-        // 동일한 객체가 있는지 검사
-        if(medicationScheduleRepository.findByMedicationAndDayOfWeekAndTimeOfDay(needMedication, medicationInsertDTO.getDayOfWeek(), medicationInsertDTO.getTimeOfDay()).isEmpty()){ // 동일한 객체가 없다면
-            newMedicationSchedule = MedicationSchedule.createMedicationSchedule(needMedication, medicationInsertDTO.getDayOfWeek(), medicationInsertDTO.getTimeOfDay());
+
+            // 동일한 객체가 있는지 검사
+        if(medicationScheduleRepository.findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(needMedication,
+                medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday()
+                ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday()
+                , medicationInsertDTO.getTimeOfDay()).isEmpty()){ // 동일한 객체가 없다면
+            newMedicationSchedule = MedicationSchedule.createMedicationSchedule(needMedication, medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday() ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday(), medicationInsertDTO.getTimeOfDay());
+
             medicationScheduleRepository.save(newMedicationSchedule); // 새로 객체를 만들어 데이터베이스에 저장해준다.
         }
-        newMedicationSchedule = medicationScheduleRepository.findByMedicationAndDayOfWeekAndTimeOfDay(needMedication, medicationInsertDTO.getDayOfWeek(), medicationInsertDTO.getTimeOfDay()).get();  // 기존의 데이터를 꺼내온다.
-
-        return newMedicationSchedule.getId();
+        newMedicationSchedule = medicationScheduleRepository.findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(needMedication,medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday()
+                ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday(), medicationInsertDTO.getTimeOfDay()).get();  // 기존의 데이터를 꺼내온다.
 
         // 약 스케줄 생성 양방향 관계 시 코드
 //        MedicationSchedule newMedicationSchedule = MedicationSchedule.createMedicationSchedule(medicationInsertDTO.getDayOfWeek(), medicationInsertDTO.getTimeOfDay());
@@ -74,6 +77,11 @@ public class MedicationService {
     // public
 
 
+    @Transactional
+    public Medication findMedicationByUserIdAndMedicationId(int userId, int medicationId){
+        // userId와 medicationId를 기반으로 Medication을 찾아서 반환합니다.
+        return medicationRepository.findByUser_IdAndId(userId, medicationId);
+    }
 
 
 

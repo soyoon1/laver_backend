@@ -10,22 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
 
-    //@Autowired
-    private final MemberRepository memberRepository;
 
- //autowired 만들지 말고 위에 @RequiredArgsConstructor를 위해 적어주기
-//단 private final로 선언해주었을 때만 가능
-//setter말고 생성자 취급으로 해주기
+    // 테스트할 때 쓰는 코드
+    private final MemberRepository memberRepository;
 
     @GetMapping("/insert") // CREATE
     public User insert(){
         return memberRepository.save(
+
                 new User( "03322311", 22, "sjsdjkdjkf", "고양이", new Date(), "한 마디 한마디", "fgDHZUPpRwWYA6uD8jLG5d:APA91bHhz_kbghqZyEHlOVncWZjlhUPjilOtryMa4pBJINdKiPMro3lHdXCA07-YHRha8aaeJ3LTmz0cwSp11Mzzf2SB1XVt3dVJsVXoQgvYjBORIrKKAJKexg_2BlfTQKDHtIxJ3BuY")
+
         );
     }
 }

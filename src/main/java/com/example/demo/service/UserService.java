@@ -1,39 +1,29 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.User;
+
+import com.example.demo.dto.LoginRequestDto;
+import com.example.demo.dto.MyPageInfoDto;
+import com.example.demo.dto.UserSignUpDto;
+import com.example.demo.dto.UserSignUpRequestDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
 public interface UserService {
 
+    // 회원가입
+    public Integer signUp(UserSignUpRequestDto requestDto) throws Exception;  // 이제 안 쓰임.
+    public Integer signUp(UserSignUpDto requestDto) throws Exception;
+
+    public User getLoginUserByLoginId(String loginId);
+
+    public User login(LoginRequestDto loginRequestDto);
 
     public User getUserByUserId(int userId);
-
+    public MyPageInfoDto getMyPageInfoByUserId(int userId);
     public User findUserById(int userId);
     public User saveUser(User user);
-
+    public void updateAlarmSetting(int userId, boolean alarm);
     public User getCurrentUser();
-
 }
 
-
-//package com.example.demo.service;
-//import com.example.demo.domain.User;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.stereotype.Service;
-//
-//@Service
-//public class UserService {
-////
-//    public User getCurrentUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication != null && authentication.getPrincipal() instanceof User) {
-//            return (User) authentication.getPrincipal();
-//        }
-//
-//        return null;
-//    }
-//}
