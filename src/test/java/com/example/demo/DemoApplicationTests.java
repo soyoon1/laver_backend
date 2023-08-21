@@ -1,3 +1,4 @@
+
 package com.example.demo;
 
 import com.example.demo.domain.Role;
@@ -23,3 +24,4 @@ class DemoApplicationTests {
 		System.out.println("isExpired: " + isExpired);
 	}
 }
+

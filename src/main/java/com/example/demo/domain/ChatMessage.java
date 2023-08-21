@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 
 
 
-//@Entity
+@Entity
 @Getter
 @Setter
 //@Table(name="ChatMessage")
@@ -28,72 +30,29 @@ public class ChatMessage {
     private MessageType type;
 
 
-    private String roomId;
-    private String sender;
-//    @Id
-//    @GeneratedValue
-//    @Column(name="message_id")
-    private String messageid;
+    //private String roomId;
+    //private String sender;
+    @Id
+    @GeneratedValue
+    @Column(name="message_id")
+    private int messageid;
+
+    @ManyToOne(targetEntity = ChatRoom.class)
+    @JsonBackReference
+    @JoinColumn(name="id")
+    private ChatRoom chatRoom;
 
 
-//    @ManyToOne(targetEntity = ChatRoom.class)
-//    @JoinColumn(name="roomId")
-    //private ChatRoom chatRoom;
+//
+    //private int userId;
+
+
+
 //    @ManyToOne(targetEntity = User.class)
-//    @JoinColumn(name="id")
+//    @JoinColumn(name="user_id")
 //    private User user;
 
     //@Column(length = 100)
     private String message;
-
-//    //private LocalDateTime timestamp;
-//
-//    public MessageType getType() {
-//        return type;
-//    }
-//
-//    public void setType(MessageType type) {
-//        this.type = type;
-//    }
-//
-//    public String getMessageid() {
-//        return messageid;
-//    }
-//
-//    public void setMessageid(String messageid) {
-//        this.messageid = messageid;
-//    }
-//
-//    public ChatRoom getChatRoom() {
-//        return chatRoom;
-//    }
-//
-//    public void setChatRoom(ChatRoom chatRoom) {
-//        this.chatRoom = chatRoom;
-//    }
-//
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public String getMessage() {
-//        return message;
-//    }
-//
-//    public void setMessage(String message) {
-//        this.message = message;
-//    }
-
-//    public LocalDateTime getTimestamp() {
-//        return timestamp;
-//    }
-//
-//    public void setTimestamp(LocalDateTime timestamp) {
-//        this.timestamp = timestamp;
-//    }
 
 }

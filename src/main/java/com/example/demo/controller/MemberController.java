@@ -23,7 +23,7 @@ public class MemberController {
     public User insert(){
         return memberRepository.save(
 
-                new User("user", "03322311", 22, "만들어진 유저", "고양이", new Date(), "한 마디 한마디", "ddUZlXa6TemNBlhJB_v-85:APA91bF0x7amNi08LJmz5hcrAXzrtDWqQFpmpTpXrHVlETxgkmswFVYEY-qk7k0PzkXgoiuoq8K-ZIsSmFV994OfLdOwmGCVAwdOttBgSZPJeA6GjTeWKHnrYEw_fSYwng8NqlQiPTcZ")
+                new User( "03322311", 22, "sjsdjkdjkf", "고양이", new Date(), "한 마디 한마디", "fgDHZUPpRwWYA6uD8jLG5d:APA91bHhz_kbghqZyEHlOVncWZjlhUPjilOtryMa4pBJINdKiPMro3lHdXCA07-YHRha8aaeJ3LTmz0cwSp11Mzzf2SB1XVt3dVJsVXoQgvYjBORIrKKAJKexg_2BlfTQKDHtIxJ3BuY")
 
         );
     }

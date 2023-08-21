@@ -7,11 +7,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<User, Integer> {
+
+    Optional <User> findById(int id);
+
+
     Optional<User> findByLoginId(String loginId);
 
-    Optional<User> findById(int id);
 
-//    @Query("SELECT u FROM User u JOIN FETCH u.medications WHERE u.id = :userId")
-//    User findUserWithMedications(@Param("userId") int userId);
+
 }
