@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 
 
-//@Entity
+@Entity
 @Getter
 @Setter
 //@Table(name="ChatMessage")
@@ -27,16 +27,22 @@ public class ChatMessage {
 
     private MessageType type;
 
-    private String roomId;
-    private String sender;
-//    @Id
-//    @GeneratedValue
-//    @Column(name="message_id")
-    private String messageid;
+    //private String roomId;
+    //private String sender;
+    @Id
+    @GeneratedValue
+    @Column(name="message_id")
+    private int messageid;
 
-//    @ManyToOne(targetEntity = ChatRoom.class)
-//    @JoinColumn(name="roomId")
-    //private ChatRoom chatRoom;
+    @ManyToOne(targetEntity = ChatRoom.class)
+    @JoinColumn(name="id")
+    private ChatRoom chatRoom;
+
+
+//
+    //private int userId;
+
+
 //    @ManyToOne(targetEntity = User.class)
 //    @JoinColumn(name="id")
 //    private User user;

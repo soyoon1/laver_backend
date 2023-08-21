@@ -38,6 +38,11 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<ChatMessage> chatMessage=new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatRoom> chatRoom=new ArrayList<>();
+
+
     public User(String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
         this.password =password;
         this.age = age;
