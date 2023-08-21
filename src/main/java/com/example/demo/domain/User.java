@@ -40,9 +40,10 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<ChatMessage> chatMessage=new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
     @JsonBackReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ChatRoom> chatRoom=new ArrayList<>();
 
 

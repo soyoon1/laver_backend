@@ -27,7 +27,6 @@ public class ChatController {
         User user=memberRepository.findById(userId).get();
         User partner=memberRepository.findById(partnerId).get();
         return chatService.createRoom(user, partner);
-
     }
 
     @GetMapping

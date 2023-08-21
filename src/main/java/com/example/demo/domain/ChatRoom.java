@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import com.example.demo.service.ChatService;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -26,16 +27,17 @@ public class ChatRoom {
     @Column(name="id",insertable = false, updatable = false)
     private int id;
 
+
+    //@JsonManagedReference
     @ManyToOne(targetEntity = User.class)
-    @JsonManagedReference
+    @JsonIgnore
+    @JsonBackReference
     @JoinColumn(name="name")
     private User user;
 
 //    @ManyToOne(targetEntity = User.class)
 //    @JoinColumn(name="name")
 //    private User user2;
-
-
 
     @Column(name = "room_name") // 컬럼 매핑 추가
     private String roomName;
@@ -50,6 +52,7 @@ public class ChatRoom {
 
     @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ChatMessage> chatMessage=new ArrayList<>();
 
 
