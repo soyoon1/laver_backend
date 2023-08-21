@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class ChatMessage {
     private int messageid;
 
     @ManyToOne(targetEntity = ChatRoom.class)
+    @JsonManagedReference
     @JoinColumn(name="id")
     private ChatRoom chatRoom;
 
@@ -50,53 +52,4 @@ public class ChatMessage {
     //@Column(length = 100)
     private String message;
 
-//    //private LocalDateTime timestamp;
-//
-//    public MessageType getType() {
-//        return type;
-//    }
-//
-//    public void setType(MessageType type) {
-//        this.type = type;
-//    }
-//
-//    public String getMessageid() {
-//        return messageid;
-//    }
-//
-//    public void setMessageid(String messageid) {
-//        this.messageid = messageid;
-//    }
-//
-//    public ChatRoom getChatRoom() {
-//        return chatRoom;
-//    }
-//
-//    public void setChatRoom(ChatRoom chatRoom) {
-//        this.chatRoom = chatRoom;
-//    }
-//
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public String getMessage() {
-//        return message;
-//    }
-//
-//    public void setMessage(String message) {
-//        this.message = message;
-//    }
-
-//    public LocalDateTime getTimestamp() {
-//        return timestamp;
-//    }
-//
-//    public void setTimestamp(LocalDateTime timestamp) {
-//        this.timestamp = timestamp;
-//    }
 }

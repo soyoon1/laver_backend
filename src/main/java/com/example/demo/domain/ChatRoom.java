@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import com.example.demo.service.ChatService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Entity
 //@Table(name="ChatRoom")
 @ToString
@@ -25,6 +27,7 @@ public class ChatRoom {
     private int id;
 
     @ManyToOne(targetEntity = User.class)
+    @JsonManagedReference
     @JoinColumn(name="name")
     private User user;
 
@@ -45,7 +48,7 @@ public class ChatRoom {
     @Transient
     private Set<WebSocketSession> sessions = new HashSet<>();
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessage=new ArrayList<>();
 
