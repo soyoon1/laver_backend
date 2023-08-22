@@ -22,13 +22,13 @@ public class MedicationSchedule {
     private Medication medication;
 
     // user_id 생략
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-//    private int dosage;
-//    @Column(length=5)
-//    private String dayOfWeek;
+    private int dosage;
+    @Column(length=5)
+    private String dayOfWeek;
 
     private boolean monday;  // 해당 요일에 약을 먹어야 하는지 알려줌.
     private boolean tuesday;

@@ -32,17 +32,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         log.info("{}", payload);
 
-        if (objectMapper == null) {
-            log.error("ObjectMapper is null");
+        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
+        log.info("chatroom =====> "+chatMessage);
+        log.info("chatroom =====> "+chatMessage.getMessage());
+        log.info("chatroom =====> "+chatMessage.getType());
+        //log.info("chatroom =====> "+chatMessage.getChatRoom());
+        if (chatMessage.getUser() != null) {
+            log.info("chatroom =====> "+chatMessage.getUser().getId());
+        } else {
+            log.info("chatroom =====> User is null");
         }
 
-        if (chatService == null) {
-            log.error("ChatService is null");
-        }
-        if (session == null) {
-            log.error("ChatService is null");
-        }
-        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
 
         ChatRoom chatRoom = chatService.findRoomById(chatMessage.getChatRoom().getId());
         log.debug("chatroom"+chatRoom);
