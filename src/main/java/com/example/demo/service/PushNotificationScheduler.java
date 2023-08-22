@@ -83,7 +83,27 @@ public class PushNotificationScheduler {
                     case "월":
                         isScheduleDay = schedule.isMonday();
                         break;
-                        ///
+
+                    case "화":
+                        isScheduleDay = schedule.isTuesday();
+                        break;
+
+                    case "수":
+                        isScheduleDay = schedule.isWednesday();
+                        break;
+
+                    case "목":
+                        isScheduleDay = schedule.isThursday();
+                        break;
+
+                    case "금":
+                        isScheduleDay = schedule.isFriday();
+                        break;
+
+                    case "토":
+                        isScheduleDay = schedule.isSaturday();
+                        break;
+
                     case "일":
                         isScheduleDay = schedule.isSunday();
                         break;
