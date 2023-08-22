@@ -7,3 +7,4 @@ public interface
 ChatMessageRepository extends JpaRepository<ChatMessage, Integer> {
     //List<ChatMessage> findByUser(User user);
 }
+

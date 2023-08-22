@@ -9,3 +9,4 @@ import java.util.List;
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
     List<ChatRoom> findByUser(User user);
 }
+

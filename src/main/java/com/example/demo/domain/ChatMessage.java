@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +31,7 @@ public class ChatMessage {
 
     private MessageType type;
 
+
     //private String roomId;
     //private String sender;
     @Id
@@ -40,9 +43,21 @@ public class ChatMessage {
     @JsonManagedReference
     @JsonIgnore
     @JoinColumn(name="room_id")
+
     private ChatRoom chatRoom;
 
 
+//
+    //private int userId;
+
+
+
+//    @ManyToOne(targetEntity = User.class)
+//    @JoinColumn(name="user_id")
+//    private User user;
+
+    //@Column(length = 100)
+    private String message;
 
     //private int userId;
 

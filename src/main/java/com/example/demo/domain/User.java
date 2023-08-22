@@ -1,5 +1,11 @@
 package com.example.demo.domain;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -41,11 +47,15 @@ public class User {
 
     private boolean alarm;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용
-    private List<Medication> medications = new ArrayList<>();
 
-    public User(String loginId, String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
-        this.loginId = loginId;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ChatRoom> chatRoom=new ArrayList<>();
+
+
+    public User(String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
         this.password =password;
         this.age = age;
         this.name = name;

@@ -43,8 +43,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
             log.info("chatroom =====> User is null");
         }
 
+
         ChatRoom chatRoom = chatService.findRoomById(chatMessage.getChatRoom().getId());
         log.debug("chatroom"+chatRoom);
         chatRoom.handlerActions(session, chatMessage, chatService);
     }
+
 }

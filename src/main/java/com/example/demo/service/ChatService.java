@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import com.example.demo.domain.ChatMessage;
+import com.example.demo.service.UserService;
+
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import javax.annotation.PostConstruct;
@@ -20,6 +23,7 @@ import java.util.*;
 public class ChatService {
     private final ObjectMapper objectMapper;
     private final ChatRoomRepository chatRoomRepository;
+
     private Map<String, ChatRoom> chatRooms;
     private final UserService userService;
     @PostConstruct
@@ -30,6 +34,7 @@ public class ChatService {
     public List<ChatRoom> findAllRoom() {
         return new ArrayList<>(chatRooms.values());
     }
+
 
     public ChatRoom findRoomById(int id) {
         return chatRooms.get(id);
@@ -67,5 +72,5 @@ public class ChatService {
         }
     }
 
-
 }
+
