@@ -59,9 +59,9 @@ public class PushNotificationScheduler {
         // 데이터베이스에서 모든 사용자 정보를 조회
         List<User> allUsers = memberRepository.findAll();
 
-        for(User user : allUsers){
+        for (User user : allUsers) {
             System.out.println(user.getId());
-            if(!user.isAlarm()){
+            if (!user.isAlarm()) {
                 System.out.println("user가 알림 설정을 하지 않았습니다.");
                 break; // 알림 설정을 안 했을 시에 반복문을 빠져나감.
             }
@@ -69,7 +69,7 @@ public class PushNotificationScheduler {
 
             List<MedicationSchedule> totalSchedules = new ArrayList<>();
             List<MedicationSchedule> eachSchedules;
-            for(Medication medication : medications){  // 약 이름마다 있는 약 스케줄 리스트
+            for (Medication medication : medications) {  // 약 이름마다 있는 약 스케줄 리스트
                 eachSchedules = medicationScheduleRepository.findByMedication(medication);
                 // 사용자의 약 이름마다 있는 약 스케줄을 한 곳으로 모음.
                 totalSchedules.addAll(eachSchedules);
@@ -77,42 +77,22 @@ public class PushNotificationScheduler {
 
             // 요일이 boolean 타입을 가진 속성 7개에 각각 들어간다고 할 때
 
-            for (MedicationSchedule schedule : totalSchedules){                 // 스케줄 데이터의 요일, 시간을 현재 요일, 시간과 비교해 같으면 알림 발송
+            for (MedicationSchedule schedule : totalSchedules) {                 // 스케줄 데이터의 요일, 시간을 현재 요일, 시간과 비교해 같으면 알림 발송
                 boolean isScheduleDay = false;
-                switch (formattedDay){    // 오늘 요일이 무엇인지에 따라 오늘 요일이 약을 먹어야 하는 요일인지 알 수 있음.
+                switch (formattedDay) {    // 오늘 요일이 무엇인지에 따라 오늘 요일이 약을 먹어야 하는 요일인지 알 수 있음.
                     case "월":
                         isScheduleDay = schedule.isMonday();
                         break;
-
-                    case "화":
-                        isScheduleDay = schedule.isTuesday();
-                        break;
-
-                    case "수":
-                        isScheduleDay = schedule.isWednesday();
-                        break;
-
-                    case "목":
-                        isScheduleDay = schedule.isThursday();
-                        break;
-
-                    case "금":
-                        isScheduleDay = schedule.isFriday();
-                        break;
-
-                    case "토":
-                        isScheduleDay = schedule.isSaturday();
-                        break;
-
+                        ///
                     case "일":
                         isScheduleDay = schedule.isSunday();
                         break;
                 }
 
-                if(isScheduleDay){    // 약 스케줄에 해당 요일 boolean 타입이 true일 때(해당 요일에 이 약을 먹어야 할 때)
-                    if(String.valueOf(schedule.getTimeOfDay()).equals(formattedTime)){ // 해당 시간에 약을 먹어야 할 때
+                if (isScheduleDay) {    // 약 스케줄에 해당 요일 boolean 타입이 true일 때(해당 요일에 이 약을 먹어야 할 때)
+                    if (String.valueOf(schedule.getTimeOfDay()).equals(formattedTime)) { // 해당 시간에 약을 먹어야 할 때
                         // 이미지가 추가되어 있지 않으면(약 복용을 인증하지 않았을 경우)
-                        if(schedule.getImg() == null) {
+                        if (schedule.getImg() == null) {
                             System.out.println("약 스케줄에 따른 알림 발송" + schedule.getTimeOfDay() + formattedTime);  // 알림이 제대로 가는지 확인할 수 있음.
                             String targetToken = user.getFcmToken();
                             String title = "약을 복용할 시간입니다!";
@@ -124,10 +104,8 @@ public class PushNotificationScheduler {
                     }
                 }
             }
-
-
         }
-
+    }
         //                    System.out.println(schedule.getDayOfWeek()+formattedDay);
 //                    System.out.println(schedule.getTimeOfDay());
 //                    System.out.println(formattedTime);
@@ -187,7 +165,7 @@ public class PushNotificationScheduler {
 //        String sound = "default";
 //        firebaseCloudMessageService.sendMessageTo(targetToken, title, body, sound);
 
-    }
+   // }
 
 
 

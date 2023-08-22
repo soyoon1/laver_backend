@@ -21,4 +21,5 @@ public interface UserService {
     public User findUserById(int userId);
     public User saveUser(User user);
     public void updateAlarmSetting(int userId, boolean alarm);
+    public User getCurrentUser();
 }
