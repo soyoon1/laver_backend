@@ -1,17 +1,5 @@
 package com.example.demo.service;
 
-
-
-
-
-
-
-
-
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import com.example.demo.controller.MypageController;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.User;
@@ -28,10 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Optional;
 
 @Slf4j
@@ -40,7 +26,6 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
 
-
     private Long expiredMs = 1000 * 60 * 60 * 24L;   // 1000 * 60 * 60l 1시간  * 24 해서 하루, 24시간으로 바꿈.
 
     private final MemberRepository memberRepository;
@@ -48,7 +33,6 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     private final MedicationService medicationService;
-
 
 
     @Transactional
@@ -171,7 +155,6 @@ public class UserServiceImpl implements UserService{
         return optionalUser.get();
     }
 
-
     @Transactional
     @Override
     public MyPageInfoDto getMyPageInfoByUserId(int userId) {
@@ -197,7 +180,6 @@ public class UserServiceImpl implements UserService{
                 .build();
     }
 
-
     @Transactional
     @Override
     public User findUserById(int userId){
@@ -212,17 +194,6 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        return null;
-    }
-
-
     public void updateAlarmSetting(int userId, boolean alarm) {
 
         User user = memberRepository.findById(userId).orElseThrow(() -> new MypageController.NotFoundException("User not found"));
