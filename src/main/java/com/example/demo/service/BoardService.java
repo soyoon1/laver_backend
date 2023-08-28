@@ -116,11 +116,15 @@ package com.example.demo.service;
 
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.User;
 import com.example.demo.dto.BoardListResponseDto;
 import com.example.demo.dto.BoardRequestDto;
 import com.example.demo.dto.BoardResponseDto;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.BoardRepository;
+import com.example.demo.repository.MemberRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -130,13 +134,19 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class BoardService {
+
+    private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     // 글 생성
     public BoardResponseDto createBoard(BoardRequestDto requestDto) {
         Board board = new Board(requestDto);
+        //SecurityContextHolder.getContext().getAuthentication();
+//        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(
+//                ()-> new RuntimeException("로그인 유저 정보가 없습니다."));
         boardRepository.save(board);
         return new BoardResponseDto(board);
     }
+
 
     // 모든 글 가져오기
     public List<BoardListResponseDto> findAllBoard() {

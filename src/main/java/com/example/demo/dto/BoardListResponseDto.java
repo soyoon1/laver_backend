@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import com.example.demo.domain.Board;
 import com.example.demo.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class BoardListResponseDto {
     // 작성자명
 //    private String username;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
     private LocalDateTime createdAt;

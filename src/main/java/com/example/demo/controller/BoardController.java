@@ -51,9 +51,4 @@ public class BoardController {
         return  boardService.deleteBoard(id);
     }
 
-//    // 비밀번호 확인
-//    @GetMapping("/boards/check/{id}/{inputPassword}")
-//    public boolean checkPassword(@PathVariable Long id,@PathVariable String inputPassword) {
-//        return boardService.checkPassword(id, inputPassword);
-//    }
 }

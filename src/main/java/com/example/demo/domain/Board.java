@@ -29,6 +29,7 @@ public class Board extends Timestamped {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
