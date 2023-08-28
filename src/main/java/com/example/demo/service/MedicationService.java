@@ -1,17 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.MedicationTake;
+import com.example.demo.dto.MainDto;
 import com.example.demo.dto.MedicationInsertDTO;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.User;
+import com.example.demo.dto.MedicationListDto;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
+import com.example.demo.repository.MedicationTakeRepository;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,6 +29,7 @@ public class MedicationService {
     private final MemberRepository memberRepository;
     private final MedicationRepository medicationRepository;
     private final MedicationScheduleRepository medicationScheduleRepository;
+    private final MedicationTakeRepository medicationTakeRepository;
 
     @Transactional
     public void saveMedicationSchedule(MedicationInsertDTO medicationInsertDTO){
@@ -81,7 +91,87 @@ public class MedicationService {
         return medicationRepository.findByUser_IdAndId(userId, medicationId);
     }
 
+    @Transactional
+    public MainDto requestMainPage() {
+        List<MedicationListDto> medicationList = new ArrayList<>();
 
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다.")); // 확인 필요
+        Date createdDate = user.getCreatedDate();
+
+        for (Medication medication : medicationRepository.findByUser(user)) {
+            int medicationId = medication.getId();
+            String medicationName = medication.getMedicationName();
+            boolean didTake = false;
+
+            for (MedicationSchedule schedule : medicationScheduleRepository.findByMedication(medication)) {
+                LocalTime timeOfDay = schedule.getTimeOfDay();
+
+                // 현재 요일을 가져옴. 원하는 형식으로 요일을 포맷팅
+                LocalDateTime now = LocalDateTime.now();
+                String formattedDay = now.format(DateTimeFormatter.ofPattern("E").withLocale(Locale.forLanguageTag("ko")));
+
+                boolean isScheduleDay = false;
+                switch (formattedDay) {    // 오늘 요일이 무엇인지에 따라 오늘 요일이 약을 먹어야 하는 요일인지 알 수 있음.
+                    case "월":
+                        isScheduleDay = schedule.isMonday();
+                        break;
+
+                    case "화":
+                        isScheduleDay = schedule.isTuesday();
+                        break;
+
+                    case "수":
+                        isScheduleDay = schedule.isWednesday();
+                        break;
+
+                    case "목":
+                        isScheduleDay = schedule.isThursday();
+                        break;
+
+                    case "금":
+                        isScheduleDay = schedule.isFriday();
+                        break;
+
+                    case "토":
+                        isScheduleDay = schedule.isSaturday();
+                        break;
+
+                    case "일":
+                        isScheduleDay = schedule.isSunday();
+                        break;
+
+                }
+
+                if (isScheduleDay) {
+                    for (MedicationTake medicationTake : medicationTakeRepository.findByMedicationSchedule(schedule)) {// 스케줄로 일단 다 찾은 다음 현재 날짜와 비교해서 있으면 true, 없으면 false
+                        LocalDate storedDate = medicationTake.getTimeOfTaking().toLocalDate();
+                        LocalDate currentDate = LocalDateTime.now().toLocalDate();
+
+                        didTake = storedDate.isEqual(currentDate);
+                    }
+                    // 이제 medicationList에 추가해주면 됨.
+                    MedicationListDto medicationListDto = MedicationListDto.builder()
+                            .medicationId(medicationId)
+                            .medicationName(medicationName)
+                            .timeOfDay(timeOfDay)
+                            .didTake(didTake)
+                            .build();
+                    medicationList.add(medicationListDto);
+
+                }
+            }
+
+        }
+
+
+        MainDto mainDto = MainDto.builder()
+                .createdDate(createdDate)
+                .medicationList(medicationList)
+                .build();
+
+        return mainDto;
+
+    }
 
 
 }
