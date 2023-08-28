@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 
 import com.example.demo.dto.BoardRequestDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,17 +28,26 @@ public class Board extends Timestamped {
     @Column(nullable = false)
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     // requestDto 정보를 가져와서 entity 만들 때 사용
     public Board(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.user=requestDto.getUser();
     }
 
     // 업데이트 메소드
     public void update(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.user=requestDto.getUser();
     }
+
+
+
 
 }

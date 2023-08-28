@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -79,5 +81,17 @@ public class JwtUtil {
 //        SecretKey secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
         return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
     }
+
+    public static int getCurrentMemberId(){
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || authentication.getName() == null){
+            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+        }
+
+        return Integer.parseInt(authentication.getName());
+    }
+
+
 
 }

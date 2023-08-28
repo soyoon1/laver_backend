@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.domain.User;
 import com.example.demo.dto.BoardListResponseDto;
 import com.example.demo.dto.BoardRequestDto;
 import com.example.demo.dto.BoardResponseDto;
@@ -20,9 +21,11 @@ public class BoardController {
     // 글 등록
     @PostMapping("/boards")
     public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto){
-        BoardResponseDto board = boardService.createBoard(requestDto);
-        return board;
+        BoardResponseDto boardResponseDto = boardService.createBoard(requestDto);
+        return boardResponseDto;
     }
+
+
 
     // 전체 목록 조회
     @GetMapping("/boards")
