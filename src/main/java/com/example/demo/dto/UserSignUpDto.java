@@ -41,6 +41,8 @@ public class UserSignUpDto {
 
     private boolean alarm;
 
+    private Date createdDate;
+
     @Builder
     public User toEntity(){
         return User.builder()
@@ -53,6 +55,7 @@ public class UserSignUpDto {
                 .fcmToken(fcmToken)
                 .role(Role.USER)
                 .alarm(alarm)
+                .createdDate(new Date())
                 .build();
     }
 
