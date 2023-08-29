@@ -32,6 +32,7 @@ public class MedicationSchedule {
 //    @Column(length=5)
 //    private String dayOfWeek; 없애야 함.
 
+
     private boolean monday;  // 해당 요일에 약을 먹어야 하는지 알려줌.
     private boolean tuesday;
     private boolean wednesday;

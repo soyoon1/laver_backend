@@ -37,7 +37,7 @@ public class MedicationService {
         Optional<User> optionalUser = memberRepository.findById(Integer.valueOf(medicationInsertDTO.getUserId()));
         User findUser = optionalUser.get();
 
-         //약 생성 및 저장
+        //약 생성 및 저장
         boolean result = false; // 이미 생성된 약인지 판단.
         Medication needMedication = new Medication();  // 약 스케줄 생성에 필요한 약
         for(Medication medication : medicationRepository.findAll()){  // 모든 약 종류를 찾아줌.
@@ -55,14 +55,16 @@ public class MedicationService {
             medicationRepository.save(needMedication);
         }
 
-         //약 스케줄 생성 및 저장
+        //약 스케줄 생성 및 저장
         MedicationSchedule newMedicationSchedule;
+
             // 동일한 객체가 있는지 검사
         if(medicationScheduleRepository.findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(needMedication,
                 medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday()
                 ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday()
                 , medicationInsertDTO.getTimeOfDay()).isEmpty()){ // 동일한 객체가 없다면
             newMedicationSchedule = MedicationSchedule.createMedicationSchedule(needMedication, medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday() ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday(), medicationInsertDTO.getTimeOfDay());
+
             medicationScheduleRepository.save(newMedicationSchedule); // 새로 객체를 만들어 데이터베이스에 저장해준다.
         }
         newMedicationSchedule = medicationScheduleRepository.findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(needMedication,medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday()

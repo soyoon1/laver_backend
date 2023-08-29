@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.User;
+
 import com.example.demo.dto.LoginRequestDto;
 import com.example.demo.dto.MyPageInfoDto;
 import com.example.demo.dto.UserSignUpDto;
 import com.example.demo.dto.UserSignUpRequestDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface UserService {
 
@@ -21,4 +24,6 @@ public interface UserService {
     public User findUserById(int userId);
     public User saveUser(User user);
     public void updateAlarmSetting(int userId, boolean alarm);
+    public User getCurrentUser();
 }
+
