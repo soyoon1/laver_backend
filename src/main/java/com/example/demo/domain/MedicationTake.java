@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -13,6 +11,7 @@ import java.util.Date;
 @Table(name = "MedicationTake")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MedicationTake {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +25,7 @@ public class MedicationTake {
     // 약을 먹은 시간
     private LocalDateTime timeOfTaking;
 
+    @Column(columnDefinition = "TEXT")
     private String img;
 
 }

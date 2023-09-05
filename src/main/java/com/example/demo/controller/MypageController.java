@@ -7,8 +7,10 @@ import com.example.demo.dto.MedicationAddRequestDto;
 import com.example.demo.dto.MyPageInfoDto;
 import com.example.demo.dto.PushSettingsDto;
 import com.example.demo.dto.UserSettingsDto;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MedicationService;
 import com.example.demo.service.UserService;
 import com.google.api.gax.rpc.NotFoundException;
@@ -22,10 +24,11 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
-@RequestMapping("/api/user/{userId}")
+@RequestMapping("/api/user")
 @RestController
 @RequiredArgsConstructor
 public class MypageController {
+    private final MemberRepository memberRepository;
 
     private final UserService userService;
     private final MedicationRepository medicationRepository;
@@ -33,16 +36,17 @@ public class MypageController {
     private final MedicationService medicationService;
 
     @GetMapping("/mypage")
-    public ResponseEntity<?> getUserMyPage(@PathVariable int userId){
+    public ResponseEntity<?> getUserMyPage(){
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
-        MyPageInfoDto myPageInfo = userService.getMyPageInfoByUserId(userId);
+        MyPageInfoDto myPageInfo = userService.getMyPageInfoByUserId(user.getId());
         return ResponseEntity.ok(myPageInfo);
 
     }
 
     @PostMapping("/medication-add")
-    public ResponseEntity<?> addMedications(@PathVariable int userId, @RequestBody List<MedicationAddRequestDto> requestDtoList){
-        User user = userService.findUserById(userId);
+    public ResponseEntity<?> addMedications(@RequestBody List<MedicationAddRequestDto> requestDtoList){
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
         for(MedicationAddRequestDto requestDto : requestDtoList){
             Medication medication = Medication.createMedication(user, requestDto.getMedicationName());
@@ -75,8 +79,10 @@ public class MypageController {
     }
 
     @GetMapping("/{medicationId}")
-    public ResponseEntity<?> getMedicationDetail(@PathVariable int userId, @PathVariable int medicationId){
-        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(userId, medicationId);
+    public ResponseEntity<?> getMedicationDetail(@PathVariable int medicationId){
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
+
+        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(user.getId(), medicationId);
 
         if(medication == null){
             throw new NotFoundException("Medication not found");
@@ -100,8 +106,10 @@ public class MypageController {
 
 
     @PutMapping("/{medicationId}")
-    public ResponseEntity<?> updateMedication(@PathVariable int userId, @PathVariable int medicationId, @RequestBody MedicationAddRequestDto requestDto) {
-        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(userId, medicationId);
+    public ResponseEntity<?> updateMedication(@PathVariable int medicationId, @RequestBody MedicationAddRequestDto requestDto) {
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
+
+        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(user.getId(), medicationId);
 
         if (medication == null) {
             throw new NotFoundException("Medication not found");
@@ -127,8 +135,10 @@ public class MypageController {
     }
 
     @DeleteMapping("/{medicationId}")
-    public ResponseEntity<?> deleteMedication(@PathVariable int userId, @PathVariable int medicationId) {
-        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(userId, medicationId);
+    public ResponseEntity<?> deleteMedication(@PathVariable int medicationId) {
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
+
+        Medication medication = medicationService.findMedicationByUserIdAndMedicationId(user.getId(), medicationId);
 
         if (medication == null) {
             throw new NotFoundException("Medication not found");
@@ -145,12 +155,8 @@ public class MypageController {
     }
 
     @GetMapping("/settings")
-    public ResponseEntity<?> getUserSettings(@PathVariable int userId) {
-        User user = userService.findUserById(userId);
-
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
+    public ResponseEntity<?> getUserSettings() {
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
         UserSettingsDto settingsDto = new UserSettingsDto();
         settingsDto.setName(user.getName());
@@ -162,12 +168,8 @@ public class MypageController {
     }
 
     @PutMapping("/settings/sentence")  // dto를 사용하지 않음.
-    public ResponseEntity<?> updateUserSentence(@PathVariable int userId, @RequestBody String sentence) {
-        User user = userService.findUserById(userId);
-
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
+    public ResponseEntity<?> updateUserSentence(@RequestBody String sentence) {
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
         user.setSentence(sentence);
         userService.saveUser(user);
@@ -176,9 +178,10 @@ public class MypageController {
     }
 
     @PutMapping("/settings/push")
-    public ResponseEntity<?> updatePushSettings(@PathVariable int userId, @RequestBody PushSettingsDto requestDto){
+    public ResponseEntity<?> updatePushSettings(@RequestBody PushSettingsDto requestDto){
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
 
-        userService.updateAlarmSetting(userId, requestDto.isAlarm());
+        userService.updateAlarmSetting(user.getId(), requestDto.isAlarm());
         return ResponseEntity.ok("Alarm setting updated successfully");
     }
 
