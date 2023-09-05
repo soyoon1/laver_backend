@@ -86,7 +86,6 @@ public class JwtUtil {
 
     // SecretKey를 사용해 Token Parsing
     private static Claims extractClaims(String token){
-//        SecretKey secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
         return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
     }
 
