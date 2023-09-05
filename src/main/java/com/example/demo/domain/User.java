@@ -42,6 +42,8 @@ public class User {
 
     private boolean alarm;
 
+    private Date createdDate; // 복용 일수를 계산하기 위함.
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용
     private List<Medication> medications = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.MedicationSchedule;
+import com.example.demo.domain.MedicationTake;
 import com.example.demo.domain.User;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
@@ -11,16 +12,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+@Transactional
 @Component
 public class PushNotificationScheduler {
 
@@ -111,8 +116,14 @@ public class PushNotificationScheduler {
 
                 if (isScheduleDay) {    // 약 스케줄에 해당 요일 boolean 타입이 true일 때(해당 요일에 이 약을 먹어야 할 때)
                     if (String.valueOf(schedule.getTimeOfDay()).equals(formattedTime)) { // 해당 시간에 약을 먹어야 할 때
-                        // 이미지가 추가되어 있지 않으면(약 복용을 인증하지 않았을 경우)
-                        if (schedule.getImg() == null) {
+                        boolean didTakeMedication = false;
+                        for(MedicationTake medicationTake: schedule.getMedicationTakeList()){
+                            LocalDateTime currentDateTime = LocalDateTime.now();
+                            if(medicationTake.getTimeOfTaking().toLocalDate().isEqual(currentDateTime.toLocalDate())){ // 오늘 날짜에 해당 약을 복용했다면
+                                didTakeMedication = true;
+                            }
+                        }
+                        if (!didTakeMedication) {  // 오늘 날짜에 약을 복용하지 않았다면
                             System.out.println("약 스케줄에 따른 알림 발송" + schedule.getTimeOfDay() + formattedTime);  // 알림이 제대로 가는지 확인할 수 있음.
                             String targetToken = user.getFcmToken();
                             String title = "약을 복용할 시간입니다!";

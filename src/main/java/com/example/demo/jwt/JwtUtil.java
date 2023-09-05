@@ -2,6 +2,7 @@ package com.example.demo.jwt;
 
 import com.example.demo.domain.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
+
 
 @Slf4j
 @Component
@@ -69,6 +73,10 @@ public class JwtUtil {
         return extractClaims(token).get("loginId").toString();
     }
 
+    public static String getUserId(String token){
+        return extractClaims(token).get("userId").toString();
+    }
+
     // 발급된 Token이 만료 시간이 지났는지 체크
     public static boolean isExpired(String token){  //, String secretKey
         Date expriedDate = extractClaims(token).getExpiration();
@@ -92,6 +100,7 @@ public class JwtUtil {
 //        return Integer.parseInt(authentication.getName());
 //    }
 
+
     public static int getCurrentMemberId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -107,7 +116,5 @@ public class JwtUtil {
 
         return Integer.parseInt(username);
     }
-
-
 
 }
