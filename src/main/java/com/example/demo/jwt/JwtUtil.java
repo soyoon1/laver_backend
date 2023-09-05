@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -89,6 +90,17 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
     }
 
+//    public static int getCurrentMemberId(){
+//        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if(authentication == null || authentication.getName() == null){
+//            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+//        }
+//
+//        return Integer.parseInt(authentication.getName());
+//    }
+
+
     public static int getCurrentMemberId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -96,7 +108,13 @@ public class JwtUtil {
             throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
         }
 
-        return Integer.parseInt(authentication.getName());
+        String username = authentication.getName();
+
+        if (!username.matches("\\d+")) {
+            throw new RuntimeException("올바르지 않은 사용자 ID 형식입니다.");
+        }
+
+        return Integer.parseInt(username);
     }
 
 }
