@@ -14,4 +14,11 @@ public interface MedicationScheduleRepository extends JpaRepository<MedicationSc
     List<MedicationSchedule> findByMedication(Medication medication);
 
     Optional<MedicationSchedule> findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(Medication needMedication, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, LocalTime timeOfDay);
+    List<MedicationSchedule> findByMonday(boolean monday);
+    List<MedicationSchedule> findByTuesday(boolean tuesday);
+    List<MedicationSchedule> findByWednesday(boolean wednesday);
+    List<MedicationSchedule> findByThursday(boolean thursday);
+    List<MedicationSchedule> findByFriday(boolean friday);
+    List<MedicationSchedule> findBySaturday(boolean saturday);
+    List<MedicationSchedule> findBySunday(boolean sunday);
 }

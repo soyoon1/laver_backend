@@ -41,6 +41,7 @@ public class User {
 
     private boolean alarm;
 
+    @Temporal(TemporalType.DATE) // 2021-03-24 이렇게 데이터를 저장할 수 있도록 하기 위함.
     private Date createdDate; // 복용 일수를 계산하기 위함.
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용

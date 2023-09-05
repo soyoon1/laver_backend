@@ -13,14 +13,17 @@ import com.example.demo.repository.MedicationScheduleRepository;
 import com.example.demo.repository.MedicationTakeRepository;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -175,5 +178,91 @@ public class MedicationService {
 
     }
 
+    // 매일 MedicationTake 테이블을 채움. 달력에 안 먹은 약도 표시하기 위함. 당일 medicationSchedule 테이블에 있는 약들 중 객체가 만들어지지 않은 약스케줄들을 img를 null로 객체를 만들어 저장시켜 줌.
+    @Transactional
+    @Scheduled(cron = "00 17 18 * * ?") // 매일 자정이 되기 1초 전에 실행, 오늘 먹지 못한 약들을 MedicationTake에 객체를 만들어 저장시켜줌.
+    public void makeMedicationTakeData(){
+        // 오늘이 무슨 요일인지 구함
+        DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek(); // 1: 월요일, 2: 화요일 ... 7: 일요일
+        // 그 요일의 값이 true인 데이터들을 medicationSchedule 테이블에서 다 구해옴.
+        List<MedicationSchedule> medicationScheduleList = new ArrayList<>();
+        switch (dayOfWeek){
+            case MONDAY:
+                medicationScheduleList = medicationScheduleRepository.findByMonday(true);
+                break;
+
+            case TUESDAY:
+                medicationScheduleList = medicationScheduleRepository.findByTuesday(true);
+                break;
+
+            case WEDNESDAY:
+                medicationScheduleList = medicationScheduleRepository.findByWednesday(true);
+                break;
+
+            case THURSDAY:
+                medicationScheduleList = medicationScheduleRepository.findByThursday(true);
+                break;
+
+            case FRIDAY:
+                medicationScheduleList = medicationScheduleRepository.findByFriday(true);
+                break;
+
+            case SATURDAY:
+                medicationScheduleList = medicationScheduleRepository.findBySaturday(true);
+                break;
+
+            case SUNDAY:
+                medicationScheduleList = medicationScheduleRepository.findBySunday(true);
+                break;
+        }
+        // timeOfTaking이 오늘 날짜에 해당하는 medicationTake 데이터를 다 구해옴. 시간은 상관없음.
+//        LocalDate today = LocalDate.now();
+//        List<MedicationTake> medicationTakeList = medicationTakeRepository.findByTimeOfTaking(today);
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        List<MedicationTake> medicationTakeList = medicationTakeRepository.findByTimeOfTakingBetween(startOfDay, endOfDay);
+
+//        // 구해진 medicationSchedule 데이터들 중 구해진 medicationTake 데이터와 비교해 데이터가 없는 값들을 찾음. (medicationTake의 scheduleId를 보고 비교하면 될 것)
+//        List<MedicationSchedule> missingScheduleList = new ArrayList<>();
+//        for(MedicationSchedule schedule: medicationScheduleList){
+//            boolean found = false;
+//            for(MedicationTake take: medicationTakeList){
+//                if(schedule.equals(take.getMedicationSchedule())){
+//                    found = true;
+//                    break;
+//                }
+//            }
+//            if(!found){
+//                missingScheduleList.add(schedule);
+//            }
+//        }
+//        // 그 schedule 데이터들을 사용해 img값이 null인 medicationTake 객체들을 만들어 줌.
+//        for(MedicationSchedule schedule: missingScheduleList){
+//            MedicationTake medicationTake = MedicationTake.builder()
+//                    .medicationSchedule(schedule)
+//                    .timeOfTaking(LocalDateTime.now())
+//                    .img(null)
+//                    .build();
+//            medicationTakeRepository.save(medicationTake);
+//        }
+
+        // 이미 존재하는 medicationTake 데이터의 scheduleId를 모으는 Set를 만듦.
+        Set<Integer> existingScheduleIds = medicationTakeList.stream()
+                .map(take -> take.getMedicationSchedule().getId())
+                .collect(Collectors.toSet());
+        // 누락된 스케줄을 찾아서 medicationTake에 추가함.
+        for(MedicationSchedule schedule: medicationScheduleList){
+            if(!existingScheduleIds.contains(schedule.getId())){
+                MedicationTake medicationTake = MedicationTake.builder()
+                    .medicationSchedule(schedule)
+                    .timeOfTaking(LocalDateTime.now())
+                    .img(null)
+                    .build();
+            medicationTakeRepository.save(medicationTake);
+            }
+        }
+
+    }
 
 }
