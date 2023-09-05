@@ -51,16 +51,16 @@ public class BoardController {
         return boardService.findOneBoard(id);
     }
 
-    // 글 수정
-    @PutMapping("/boards/{id}")
-    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
-        return boardService.updateBoard(id,requestDto);
-    }
-
-    // 글 삭제
-    @DeleteMapping("/boards/{id}")
-    public Long deleteBoard(@PathVariable Long id) {
-        return  boardService.deleteBoard(id);
-    }
+//    // 글 수정
+//    @PutMapping("/boards/{id}")
+//    public Long updateBoard(User user, @PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
+//        return boardService.updateBoard(user, id,requestDto);
+//    }
+//
+//    // 글 삭제
+//    @DeleteMapping("/boards/{id}")
+//    public Long deleteBoard(User user, @PathVariable Long id) {
+//        return  boardService.deleteBoard(user, id);
+//    }
 
 }

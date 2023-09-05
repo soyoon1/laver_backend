@@ -99,5 +99,6 @@ public class BoardResponseDto {
         this.content = board.getContent();
         this.createdAt = board.getModifiedAt();
         this.modifiedAt = board.getCreatedAt();
+        this.name=board.getUser().getName();
     }
 }
