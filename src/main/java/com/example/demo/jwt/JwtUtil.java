@@ -92,6 +92,22 @@ public class JwtUtil {
 //        return Integer.parseInt(authentication.getName());
 //    }
 
+//    public static int getCurrentMemberId(){
+//        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if(authentication == null || authentication.getName() == null){
+//            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+//        }
+//
+//        String username = authentication.getName();
+//
+//        if (!username.matches("\\d+")) {
+//            throw new RuntimeException("올바르지 않은 사용자 ID 형식입니다.");
+//        }
+//
+//        return Integer.parseInt(username);
+//    }
+
     public static int getCurrentMemberId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -99,13 +115,7 @@ public class JwtUtil {
             throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
         }
 
-        String username = authentication.getName();
-
-        if (!username.matches("\\d+")) {
-            throw new RuntimeException("올바르지 않은 사용자 ID 형식입니다.");
-        }
-
-        return Integer.parseInt(username);
+        return Integer.parseInt(authentication.getName());
     }
 
 

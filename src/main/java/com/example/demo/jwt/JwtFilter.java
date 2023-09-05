@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 인증된 사용자를 나타내는 토큰 객체를 생성하고, 권한 정보를 설정
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUser.getLoginId(), null, List.of(new SimpleGrantedAuthority("USER")));
+                new UsernamePasswordAuthenticationToken(loginUser.getId(), null, List.of(new SimpleGrantedAuthority("USER")));
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         logger.info(authenticationToken);

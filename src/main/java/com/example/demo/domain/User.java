@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.example.demo.dto.UserRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Entity
 @Getter
@@ -61,6 +63,10 @@ public class User {
         this.birth = date;
         this.sentence = sentence;
         this.fcmToken = fcmToken;
+    }
+
+    public User(UserRequestDto requestDto) {
+        this.name = requestDto.getName();
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder){
