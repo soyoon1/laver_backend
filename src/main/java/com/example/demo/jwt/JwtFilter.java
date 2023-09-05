@@ -32,8 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
         // Header의 Authorization 값이 비어있으면 => Jwt Token을 전송하지 않음 => 로그인 하지 않음.
         // Header의 Authorization 값이 'Bearer '로 시작하지 않으면 => 잘못된 토큰
         if(authorization == null || !authorization.startsWith("Bearer ")){
-            logger.error("authorization을 잘못 보냈습니다.");
             filterChain.doFilter(request, response);
+            logger.error("authorization을 잘못 보냈습니다.");
             return;
         }
 
@@ -51,6 +51,9 @@ public class JwtFilter extends OncePerRequestFilter {
         // loginId token에서 꺼내기
         String loginId = JwtUtil.getLoginId(token);
         logger.info("loginId: " + loginId);
+
+        String userId = JwtUtil.getUserId(token);
+        logger.info("userId: " + userId);
 
         // 추출한 LoginId로 User 찾아오기
         User loginUser = userService.getLoginUserByLoginId(loginId);
