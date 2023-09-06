@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.MedicationTake;
 import com.example.demo.dto.MainDto;
+import com.example.demo.dto.MedicationRequestDto;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
 import com.example.demo.repository.MedicationTakeRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/api")
@@ -73,6 +75,12 @@ public class MainPageController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/main/medication")
+    public ResponseEntity<List<MedicationRequestDto>> getHealthcareTodayPage(){
+        List<MedicationRequestDto> medicationRequestDtoList = medicationService.requestHealthcareTodayPage();
+        return ResponseEntity.ok(medicationRequestDtoList);
     }
 
 }

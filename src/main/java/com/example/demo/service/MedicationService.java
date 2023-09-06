@@ -7,6 +7,7 @@ import com.example.demo.domain.Medication;
 import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.User;
 import com.example.demo.dto.MedicationListDto;
+import com.example.demo.dto.MedicationRequestDto;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
@@ -180,7 +181,7 @@ public class MedicationService {
 
     // 매일 MedicationTake 테이블을 채움. 달력에 안 먹은 약도 표시하기 위함. 당일 medicationSchedule 테이블에 있는 약들 중 객체가 만들어지지 않은 약스케줄들을 img를 null로 객체를 만들어 저장시켜 줌.
     @Transactional
-    @Scheduled(cron = "00 17 18 * * ?") // 매일 자정이 되기 1초 전에 실행, 오늘 먹지 못한 약들을 MedicationTake에 객체를 만들어 저장시켜줌.
+    @Scheduled(cron = "59 59 23 * * ?") // 매일 자정이 되기 1초 전에 실행, 오늘 먹지 못한 약들을 MedicationTake에 객체를 만들어 저장시켜줌.
     public void makeMedicationTakeData(){
         // 오늘이 무슨 요일인지 구함
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek(); // 1: 월요일, 2: 화요일 ... 7: 일요일
@@ -264,5 +265,94 @@ public class MedicationService {
         }
 
     }
+
+
+    @Transactional
+    public List<MedicationRequestDto> requestHealthcareTodayPage() { // 건강관리 -당일 페이지
+        List<MedicationRequestDto> medicationList = new ArrayList<>();
+
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다.")); // 확인 필요
+
+        for (Medication medication : medicationRepository.findByUser(user)) {
+            int medicationId = medication.getId();
+            String medicationName = medication.getMedicationName();
+            boolean didTake = false;
+
+            for (MedicationSchedule schedule : medicationScheduleRepository.findByMedication(medication)) {
+                LocalTime timeOfDay = schedule.getTimeOfDay();
+
+                // 현재 요일을 가져옴. 원하는 형식으로 요일을 포맷팅
+                LocalDateTime now = LocalDateTime.now();
+                String formattedDay = now.format(DateTimeFormatter.ofPattern("E").withLocale(Locale.forLanguageTag("ko")));
+
+                boolean isScheduleDay = false;
+                switch (formattedDay) {    // 오늘 요일이 무엇인지에 따라 오늘 요일이 약을 먹어야 하는 요일인지 알 수 있음.
+                    case "월":
+                        isScheduleDay = schedule.isMonday();
+                        break;
+
+                    case "화":
+                        isScheduleDay = schedule.isTuesday();
+                        break;
+
+                    case "수":
+                        isScheduleDay = schedule.isWednesday();
+                        break;
+
+                    case "목":
+                        isScheduleDay = schedule.isThursday();
+                        break;
+
+                    case "금":
+                        isScheduleDay = schedule.isFriday();
+                        break;
+
+                    case "토":
+                        isScheduleDay = schedule.isSaturday();
+                        break;
+
+                    case "일":
+                        isScheduleDay = schedule.isSunday();
+                        break;
+
+                }
+
+                if (isScheduleDay) {
+                    String img = null;
+                    LocalTime timeOfTaking = null;
+
+                    for (MedicationTake medicationTake : medicationTakeRepository.findByMedicationSchedule(schedule)) {// 스케줄로 일단 다 찾은 다음 현재 날짜와 비교해서 있으면 true, 없으면 false
+                        LocalDate storedDate = medicationTake.getTimeOfTaking().toLocalDate();
+                        LocalDate currentDate = LocalDateTime.now().toLocalDate();
+
+                        didTake = storedDate.isEqual(currentDate);
+                        if(didTake){
+                            img = medicationTake.getImg();
+                            timeOfTaking = medicationTake.getTimeOfTaking().toLocalTime();
+                        }
+                    }
+                    // 이제 medicationList에 추가해주면 됨.
+                    MedicationRequestDto medicationListDto = MedicationRequestDto.builder()
+                                    .medicationId(medicationId)
+                                    .medicationName(medicationName)
+                                    .timeOfDay(timeOfDay)
+                                    .didTake(didTake)
+                                    .img(img)
+                                    .timeOfTaking(timeOfTaking)
+                                    .build();
+                    medicationList.add(medicationListDto);
+
+                }
+            }
+
+        }
+
+
+
+
+        return medicationList;
+
+    }
+
 
 }
