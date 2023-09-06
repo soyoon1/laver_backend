@@ -78,7 +78,7 @@ import java.util.List;
 @Entity
 public class Board extends Timestamped {
     // 글 고유 아이디
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -97,9 +97,9 @@ public class Board extends Timestamped {
     private String content;
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "board")
-    List<Comment> comments = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "board")
+//    List<Comment> comments = new ArrayList<>();
 
 
     // requestDto 정보를 가져와서 entity 만들 때 사용

@@ -24,29 +24,23 @@ public class BoardController {
         this.memberRepository = memberRepository;
     }
 
-//    // 글 등록
-//    @PostMapping("/boards")
-//    public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto){
-//        BoardResponseDto boardResponseDto = boardService.createBoard(user, requestDto);
-//        return boardResponseDto;
-//    }
 
 
     // 글 등록
-    @PostMapping("/boards")
+    @PostMapping("/api/boards")
     public BoardResponseDto createBoard(User user, @RequestBody BoardRequestDto requestDto) {
         user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
         return boardService.createBoard(user, requestDto);
     }
 
     // 전체 목록 조회
-    @GetMapping("/boards")
+    @GetMapping("/api/boards")
     public List<BoardListResponseDto> getAllBoards() {
         return boardService.findAllBoard();
     }
 
     // 글 하나 조회
-    @GetMapping("/boards/{id}")
+    @GetMapping("/api/boards/{id}")
     public BoardResponseDto getOneBoard(@PathVariable Long id) {
         return boardService.findOneBoard(id);
     }
