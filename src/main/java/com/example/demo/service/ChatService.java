@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.ChatRoom;
 import com.example.demo.domain.User;
+import com.example.demo.repository.ChatMessageRepository;
 import com.example.demo.repository.ChatRoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.*;
 public class ChatService {
     private final ObjectMapper objectMapper;
     private final ChatRoomRepository chatRoomRepository;
+
 
     private Map<String, ChatRoom> chatRooms;
     private final UserService userService;
@@ -67,6 +69,7 @@ public class ChatService {
     public <T> void sendMessage(WebSocketSession session, T message) {
         try{
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+            //chatMessageRepository.save(message);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }

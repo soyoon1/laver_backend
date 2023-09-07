@@ -2,9 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.ChatRoom;
 import com.example.demo.domain.User;
+import com.example.demo.jwt.JwtUtil;
+import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.ChatRoomRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.ChatService;
+import com.example.demo.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +24,22 @@ public class ChatController {
     private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
 
+//    public ChatController(ChatService chatService, MemberRepository memberRepository, ChatRoomRepository chatRoomRepository) {
+//        this.chatService = chatService;
+//        this.memberRepository = memberRepository;
+//        this.chatRoomRepository=chat
+//    }
+//
     @PostMapping
-    public ChatRoom createRoom(@RequestParam("user") int userId,
+    public ChatRoom createRoom(User user,
                                @RequestParam("partner") int partnerId) {
-        User user=memberRepository.findById(userId).get();
+        user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
         User partner=memberRepository.findById(partnerId).get();
         return chatService.createRoom(user, partner);
     }
 
     @GetMapping
-    public List<ChatRoom> findAllRoom() {
-        return chatService.findAllRoom();
+    public List<ChatRoom> getCurrentUserChatRooms() {
+        return chatService.getCurrentUserChatRooms();
     }
 }

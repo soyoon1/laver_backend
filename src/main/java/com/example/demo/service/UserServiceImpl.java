@@ -4,6 +4,7 @@ import com.example.demo.controller.MypageController;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.User;
 import com.example.demo.dto.*;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

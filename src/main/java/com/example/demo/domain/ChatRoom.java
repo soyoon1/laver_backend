@@ -30,8 +30,11 @@ public class ChatRoom {
     @ManyToOne(targetEntity = User.class)
     @JsonIgnore
     //@JsonManagedReference
-    @JoinColumn(name="name")
+    @JoinColumn(name="user_id")
     private User user;
+
+
+    //private int partner_id;
 
 
     @Column(name = "room_name") // 컬럼 매핑 추가
@@ -58,7 +61,6 @@ public class ChatRoom {
         this.id = id;
         this.roomName=roomName;
         this.user=user;
-//        this.user2=partner;
     }
 
 
