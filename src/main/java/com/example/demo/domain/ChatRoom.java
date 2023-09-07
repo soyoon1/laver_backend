@@ -75,11 +75,15 @@ public class ChatRoom {
         }
     }
 
-    private <T> void sendMessage(T message, ChatService chatService) {
+//    private <T> void sendMessage(T message, ChatService chatService) {
+//        sessions.parallelStream()
+//                .forEach(session -> chatService.sendMessage(session, message));
+//    }
+
+    private void sendMessage(ChatMessage message, ChatService chatService) {
         sessions.parallelStream()
                 .forEach(session -> chatService.sendMessage(session, message));
     }
-
     //@OneToMany(mappedBy = "room")
 
 }
