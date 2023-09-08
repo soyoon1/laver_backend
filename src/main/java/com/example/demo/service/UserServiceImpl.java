@@ -4,6 +4,7 @@ import com.example.demo.controller.MypageController;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.User;
 import com.example.demo.dto.*;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -201,16 +202,24 @@ public class UserServiceImpl implements UserService{
         memberRepository.save(user);
 
     }
+//    @Transactional
+//    @Override
+//    public User getCurrentUser() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication != null && authentication.getPrincipal() instanceof User) {
+//            return (User) authentication.getPrincipal();
+//        }
+//
+//        return null;
+//    }
+
     @Transactional
     @Override
     public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        return null;
+        int currentMemberId = JwtUtil.getCurrentMemberId();
+        return memberRepository.findById(currentMemberId)
+                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 
 

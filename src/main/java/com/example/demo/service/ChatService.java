@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.ChatRoom;
 import com.example.demo.domain.User;
+import com.example.demo.dto.BoardListResponseDto;
+import com.example.demo.repository.ChatMessageRepository;
 import com.example.demo.repository.ChatRoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.util.*;
 public class ChatService {
     private final ObjectMapper objectMapper;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
+
 
     private Map<String, ChatRoom> chatRooms;
     private final UserService userService;
@@ -64,12 +68,29 @@ public class ChatService {
         return userChatRooms;
     }
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try{
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+
+
+
+
+    //    public <T> void sendMessage(WebSocketSession session, T message) {
+//        try{
+//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+//            //chatMessageRepository.save(message);
+//        } catch (IOException e) {
+//            log.error(e.getMessage(), e);
+//        }
+//    }
+    public void sendMessage(WebSocketSession session, ChatMessage chatMessage) {
+        try {
+            // WebSocket을 통해 메시지 전송
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(chatMessage)));
+
+            // 채팅 메시지를 chatMessageRepository에 저장
+            chatMessageRepository.save(chatMessage);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
     }
+
 
 }

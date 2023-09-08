@@ -53,6 +53,8 @@ public class ChatMessage {
     @JoinColumn(name="user_id")
     private User user;
 
+
+
     //@Column(length = 100)
     private String message;
 
