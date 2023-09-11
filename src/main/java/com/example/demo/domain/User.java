@@ -57,6 +57,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 양방향 관계 매핑된 것. 읽기 전용
+    private List<MedicationTake> medicationTakeList = new ArrayList<>();
+
     public User(String loginId, String password, int age, String name, String nickname, Date date, String sentence, String fcmToken){
         this.loginId = loginId;
         this.password =password;

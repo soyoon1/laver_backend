@@ -1,13 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.MedicationTake;
-import com.example.demo.dto.MainDto;
-import com.example.demo.dto.MedicationInsertDTO;
+import com.example.demo.dto.*;
 import com.example.demo.domain.Medication;
 import com.example.demo.domain.MedicationSchedule;
 import com.example.demo.domain.User;
-import com.example.demo.dto.MedicationListDto;
-import com.example.demo.dto.MedicationRequestDto;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.MedicationRepository;
 import com.example.demo.repository.MedicationScheduleRepository;
@@ -18,10 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,21 +68,9 @@ public class MedicationService {
         newMedicationSchedule = medicationScheduleRepository.findByMedicationAndMondayAndTuesdayAndWednesdayAndThursdayAndFridayAndSaturdayAndSundayAndTimeOfDay(needMedication,medicationInsertDTO.isMonday(), medicationInsertDTO.isTuesday(), medicationInsertDTO.isWednesday(), medicationInsertDTO.isThursday()
                 ,medicationInsertDTO.isFriday(), medicationInsertDTO.isSaturday(), medicationInsertDTO.isSunday(), medicationInsertDTO.getTimeOfDay()).get();  // 기존의 데이터를 꺼내온다.
 
-        // 약 스케줄 생성 양방향 관계 시 코드
-//        MedicationSchedule newMedicationSchedule = MedicationSchedule.createMedicationSchedule(medicationInsertDTO.getDayOfWeek(), medicationInsertDTO.getTimeOfDay());
-//
-//
-//        // 약 생성 및 저장
-//        Medication medication = Medication.createMedication(findUser, medicationInsertDTO.getMedicationName(), newMedicationSchedule);
-//        medicationRepository.save(medication);
-
     }
     @Transactional
     public Medication findOne(Integer id){return medicationRepository.findById(id).get();}
-
-
-    // 오전, 오후에 해당하는 약 스케줄
-    // public
 
 
     @Transactional
@@ -166,9 +148,7 @@ public class MedicationService {
 
                 }
             }
-
         }
-
 
         MainDto mainDto = MainDto.builder()
                 .createdDate(createdDate)
@@ -259,6 +239,8 @@ public class MedicationService {
                     .medicationSchedule(schedule)
                     .timeOfTaking(LocalDateTime.now())
                     .img(null)
+                    .medicationName(schedule.getMedication().getMedicationName())
+                    .timeOfDay(schedule.getTimeOfDay())
                     .build();
             medicationTakeRepository.save(medicationTake);
             }
@@ -272,6 +254,8 @@ public class MedicationService {
         List<MedicationRequestDto> medicationList = new ArrayList<>();
 
         User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다.")); // 확인 필요
+
+        List<MedicationTake> alreadyAddedList = new ArrayList<>();
 
         for (Medication medication : medicationRepository.findByUser(user)) {
             int medicationId = medication.getId();
@@ -329,8 +313,10 @@ public class MedicationService {
                         if(didTake){
                             img = medicationTake.getImg();
                             timeOfTaking = medicationTake.getTimeOfTaking().toLocalTime();
+                            alreadyAddedList.add(medicationTake);
                         }
                     }
+                    System.out.println("alreadyAddedList = " + alreadyAddedList);
                     // 이제 medicationList에 추가해주면 됨.
                     MedicationRequestDto medicationListDto = MedicationRequestDto.builder()
                                     .medicationId(medicationId)
@@ -347,12 +333,118 @@ public class MedicationService {
 
         }
 
-
-
+        // 약이 삭제되기 전 이미 사용자가 약을 복용한 기록이 있을 때
+        for(MedicationTake medicationTake: medicationTakeRepository.findByUser(user)){
+            if(medicationTake.getTimeOfTaking().toLocalDate().isEqual(LocalDate.now())){
+                if(!alreadyAddedList.contains(medicationTake)){
+                    MedicationRequestDto medicationListDto = MedicationRequestDto.builder() // 이미 약을 복용했기 때문에 medicationId 필요없음. 찾을 수도 없고.
+                            .medicationName(medicationTake.getMedicationName())
+                            .timeOfDay(medicationTake.getTimeOfDay())
+                            .didTake(true)
+                            .img(medicationTake.getImg())
+                            .timeOfTaking(medicationTake.getTimeOfTaking().toLocalTime())
+                            .build();
+                    medicationList.add(medicationListDto);
+                }
+            }
+        }
 
         return medicationList;
-
     }
 
+    @Transactional
+    public MedicationCalendarDto requestHealthcareMonthPage(LocalDate date) { // 건강 관리 - month 페이지
+
+        MedicationCalendarDto medicationCalendarDto = null;
+
+        LocalDate today = LocalDate.now(); // 오늘 날짜
+
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다.")); // 현재 사용자
+
+        List<MedicationRequestDto> medicationRequestDtoList = new ArrayList<>();
+
+        if (today.isAfter(date)) { // 오늘 날짜가 비교하는 날짜보다 이후인 경우
+            // 과거에 복용했던 약 보여주기
+//            for (Medication medication : medicationRepository.findByUser(user)) {
+//                for (MedicationSchedule medicationSchedule : medicationScheduleRepository.findByMedication(medication)) {
+//                    for (MedicationTake medicationTake : medicationTakeRepository.findByMedicationSchedule(medicationSchedule)) {
+//                        if (medicationTake.getTimeOfTaking().toLocalDate().isEqual(date)) {
+//                            MedicationRequestDto medicationRequestDto = MedicationRequestDto.builder()
+//                                    .medicationId(medication.getId())
+//                                    .medicationName(medication.getMedicationName())
+//                                    .timeOfDay(medicationSchedule.getTimeOfDay())
+//                                    .didTake(medicationTake.getImg() != null)
+//                                    .img(medicationTake.getImg())
+//                                    .timeOfTaking(medicationTake.getImg() == null ? null : medicationTake.getTimeOfTaking().toLocalTime())
+//                                    .build();
+//                            medicationRequestDtoList.add(medicationRequestDto);
+//                        }
+//                    }
+//                }
+//            }
+
+            for (MedicationTake medicationTake : medicationTakeRepository.findByUser(user)) {
+                if (medicationTake.getTimeOfTaking().toLocalDate().isEqual(date)) {
+                    MedicationRequestDto medicationRequestDto = MedicationRequestDto.builder()  // 과거 약을 보여주는데 medicationId를 알려줄 필요가 없음.
+                            .medicationName(medicationTake.getMedicationName())
+                            .timeOfDay(medicationTake.getTimeOfDay())
+                            .didTake(medicationTake.getImg() != null)
+                            .img(medicationTake.getImg())
+                            .timeOfTaking(medicationTake.getImg() == null ? null : medicationTake.getTimeOfTaking().toLocalTime())
+                            .build();
+                    medicationRequestDtoList.add(medicationRequestDto);
+                }
+            }
+
+            medicationCalendarDto = MedicationCalendarDto.builder()
+                    .date(java.sql.Date.valueOf(date))
+                    .medicationRequestDtoList(medicationRequestDtoList)
+                    .build();
+
+        } else if (today.isEqual(date)) { // 오늘 날짜가 비교하는 날짜와 같은 경우
+            // 오늘 날짜에 해당하는 약 리스트들 보여주기
+            medicationRequestDtoList = requestHealthcareTodayPage();
+            medicationCalendarDto = MedicationCalendarDto.builder()
+                    .date(java.sql.Date.valueOf(date))
+                    .medicationRequestDtoList(medicationRequestDtoList)
+                    .build();
+
+        } else {
+            throw new IllegalStateException("날짜가 잘못되었습니다.");
+        }
+
+        return medicationCalendarDto;
+    }
+
+    @Transactional // 테스트 코드
+    public void saveMedicationTakeTest(){
+        MedicationTake medicationTake = new MedicationTake(5, medicationScheduleRepository.findById(1).get(), memberRepository.findById(1).get(), LocalDateTime.of(2023, 9, 6, 13, 24, 35), "https://laver-bucket.s3.ap-northeast-2.amazonaws.com/2022-03-20%20%2837%29.png", medicationScheduleRepository.findById(1).get().getMedication().getMedicationName(), medicationScheduleRepository.findById(1).get().getTimeOfDay());
+        medicationTakeRepository.save(medicationTake);
+        MedicationTake medicationTake12 = new MedicationTake(6, medicationScheduleRepository.findById(3).get(), memberRepository.findById(1).get(), LocalDateTime.of(2023, 9, 6, 8, 12, 59), "https://laver-bucket.s3.ap-northeast-2.amazonaws.com/2022-03-20%20%2837%29.png", medicationScheduleRepository.findById(3).get().getMedication().getMedicationName(), medicationScheduleRepository.findById(3).get().getTimeOfDay());
+        medicationTakeRepository.save(medicationTake12);
+        MedicationTake medicationTake2 = new MedicationTake(7, medicationScheduleRepository.findById(6).get(), memberRepository.findById(1).get(), LocalDateTime.of(2023, 9, 6, 20, 33, 24), "https://laver-bucket.s3.ap-northeast-2.amazonaws.com/2022-03-20%20%2837%29.png", medicationScheduleRepository.findById(6).get().getMedication().getMedicationName(), medicationScheduleRepository.findById(6).get().getTimeOfDay());
+        medicationTakeRepository.save(medicationTake2);
+    }
+
+    // Medication을 삭제하고 외래 키 제약 조건을 관리하는 메서드
+    @Transactional
+    public void deleteMedicationWithConstraint(int medicationId){
+        try{
+            disableForeignKeyConstraint(); // 외래 키 제약 조건 해제
+            medicationRepository.deleteById(medicationId); // Medication 삭제
+        }finally {
+            enableForeignKeyConstraint(); // 외래 키 제약 조건 설정
+        }
+    }
+
+    // 외래 키 제약 조건 해제
+    private void disableForeignKeyConstraint(){
+        medicationRepository.disableForeignKeyConstraint();
+    }
+
+    // 외래 키 제약 조건 설정
+    private void enableForeignKeyConstraint(){
+        medicationRepository.enableForeignKeyConstraint();
+    }
 
 }

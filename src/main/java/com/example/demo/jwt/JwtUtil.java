@@ -89,17 +89,6 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
     }
 
-//    public static int getCurrentMemberId(){
-//        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if(authentication == null || authentication.getName() == null){
-//            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
-//        }
-//
-//        return Integer.parseInt(authentication.getName());
-//    }
-
-
     public static int getCurrentMemberId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
