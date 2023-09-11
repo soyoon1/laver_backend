@@ -149,7 +149,8 @@ public class MypageController {
             medicationScheduleRepository.delete(schedule); // 약 스케줄 삭제
         }
 
-        medicationRepository.delete(medication); // 약 정보 삭제
+//        medicationRepository.delete(medication); // 약 정보 삭제
+        medicationService.deleteMedicationWithConstraint(medicationId);
 
         return ResponseEntity.ok("Medication and schedules deleted successfully");
     }

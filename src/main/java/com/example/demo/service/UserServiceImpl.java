@@ -202,17 +202,6 @@ public class UserServiceImpl implements UserService{
         memberRepository.save(user);
 
     }
-//    @Transactional
-//    @Override
-//    public User getCurrentUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication != null && authentication.getPrincipal() instanceof User) {
-//            return (User) authentication.getPrincipal();
-//        }
-//
-//        return null;
-//    }
 
     @Transactional
     @Override

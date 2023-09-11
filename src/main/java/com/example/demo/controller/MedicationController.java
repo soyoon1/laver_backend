@@ -32,16 +32,10 @@ public class MedicationController {
         return "redirect:/medication";
     }
 
-//    @GetMapping("/{medicationId}/edit")
-//    public String updateMedicationForm(@PathVariable("medicationId") Integer medicationId, Model model){
-//
-//        Medication medication = medicationService.findOne(medicationId);
-//
-//        MedicationInsertDTO form = new MedicationInsertDTO();
-//        form.setUserId();
-//        form.setMedicationName();
-//
-//    }
-
+    @GetMapping("/medicationTake") // medicationTake 데이터 임의로 삽입
+    public String createMedicationTake(){
+        medicationService.saveMedicationTakeTest();
+        return "medicationTake 저장 완료";
+    }
 
 }
