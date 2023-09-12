@@ -17,10 +17,5 @@ public class BoardRequestDto {
 
     private String content;
 
-//    private Long userId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    @JoinColumn(name = "user_id")
-//    private User user;
 }

@@ -2,30 +2,48 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Checklist;
 import com.example.demo.domain.User;
+import com.example.demo.dto.ChecklistRequestDto;
+import com.example.demo.dto.ChecklistResponseDto;
+import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.ChecklistRepository;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.service.ChecklistService;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
-
-@RequestMapping("/checklist")
+import java.util.List;
+//@RequestMapping("/api/cheklist")
 @RestController
 public class ChecklistController {
 
-    @Autowired            // 이거 뺄 것 @Required~
-    private ChecklistRepository ChecklistRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @GetMapping("/insert") // CREATE
-    public Checklist insert(){
-        User user=new User( "soyoon", "12345", 123131, "annie", "kim", new Date(), "한 마디", "eZwsW8KKQZGVFiZAFj0RwB:APA91bHXTrK28tbVKFAten4iFTY8hz16x8qCB8l5rymIlkSCCuEuu5rvxnOIh5HQ7EwYzWD4q4a2-M-PpUsMXJbtK8QTm-b_2kPLDFta4MSRwUBnVo_R4qCD7JpKgHS09GA5hr8B9txM");
-        memberRepository.save(user);
-        return ChecklistRepository.save(
-                new Checklist( user, new Date(123, 6, 12)) // year은 1900 + n으로 처리, month는 n + 1로 처리   최종적으로 2023-07-12로 처리됨.
-        );
+
+    private final ChecklistService checklistService;
+    private final MemberRepository memberRepository;
+
+    public ChecklistController(ChecklistService checklistService, MemberRepository memberRepository){
+        this.checklistService=checklistService;
+        this.memberRepository=memberRepository;
     }
+
+    @PostMapping("/api/checklist")
+    public ChecklistResponseDto createChecklist(@RequestBody ChecklistRequestDto requestDto){
+        User user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
+        return checklistService.createChecklist(user, requestDto);
+    }
+
+    @GetMapping("/api/checklist/{date}")
+    public ChecklistResponseDto getOneChecklist(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
+        return checklistService.findOneChecklist(date);
+    }
+
 }

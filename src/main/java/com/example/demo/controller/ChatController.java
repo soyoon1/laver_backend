@@ -30,7 +30,7 @@ public class ChatController {
 //        this.chatRoomRepository=chat
 //    }
 //
-    @PostMapping
+    @PostMapping("/api/checklist")
     public ChatRoom createRoom(User user,
                                @RequestParam("partner") int partnerId) {
         user = memberRepository.findById(JwtUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("로그인 유저 정보가 없습니다."));
@@ -38,7 +38,7 @@ public class ChatController {
         return chatService.createRoom(user, partner);
     }
 
-    @GetMapping
+    @GetMapping("/api/checklist")
     public List<ChatRoom> getCurrentUserChatRooms() {
         return chatService.getCurrentUserChatRooms();
     }
