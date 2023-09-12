@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.ChatMessage;
 import com.example.demo.service.UserService;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import javax.annotation.PostConstruct;
@@ -70,8 +71,6 @@ public class ChatService {
 
 
 
-
-
     //    public <T> void sendMessage(WebSocketSession session, T message) {
 //        try{
 //            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
@@ -80,6 +79,9 @@ public class ChatService {
 //            log.error(e.getMessage(), e);
 //        }
 //    }
+
+
+    @Transactional
     public void sendMessage(WebSocketSession session, ChatMessage chatMessage) {
         try {
             // WebSocket을 통해 메시지 전송
